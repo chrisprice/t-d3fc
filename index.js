@@ -7,6 +7,7 @@ const LRU = require('lru-cache');
 const babel = require('babel-core');
 
 const searchTerm = 't.d3fc.io';
+const babelOptions = { presets: ['es2015', 'stage-2'] };
 
 const app = express();
 
@@ -59,30 +60,31 @@ const updateSearchResults = () => {
     }
     console.log('Search completed', tweets.statuses.length);
     const statuses = tweets.statuses.map(function(status) {
-        return Object.assign({}, status, {
-          es6: status.entities.urls.reduce(function(text, url) {
-            return text.substring(0, url.indices[0]) + text.substring(url.indices[1]);
-          }, status.text)
-        });
-      })
-      .map(function(status) {
-        try {
-          return Object.assign({}, status, {
-            es5: babel.transform(status.es6, { }).code
-          });
-        } catch (e) {
-          console.log('Failed to transform', e);
-          return status;
+        const cached = cache.get(status.id_str);
+        if (cached != null) {
+          return cached;
         }
-      })
-      .filter(function(status, i) {
-        return status.es5;
+        const es6 = status.entities.urls.reduce(function(text, url) {
+          return text.substring(0, url.indices[0]) + text.substring(url.indices[1]);
+        }, status.text);
+        let es5 = null;
+        try {
+           es5 = babel.transform(es6, babelOptions).code;
+        } catch (e) {
+          console.log('Failed to transform', status.id_str, e);
+        }
+        const processed = Object.assign({}, status, {
+          es5: es5,
+          es6: es6
+        });
+        cache.set(status.id_str, processed);
+        return processed;
       });
-    statuses.forEach(function(status) {
-      cache.set(status.id_str, status);
+    const validStatuses = statuses.filter(function(status) {
+      return status.es5;
     });
-    cache.set('statuses', statuses);
-    console.log('Search results updated', statuses.length);
+    cache.set('statuses', validStatuses);
+    console.log('Search results updated', validStatuses.length);
   });
 }
 updateSearchResults();
