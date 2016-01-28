@@ -5,8 +5,7 @@ const express = require('express');
 const cors = require('cors');
 const LRU = require('lru-cache');
 
-const hashtag = '#help';
-const example = 'o=j(d3.range(0,n),"circle");o.enter.attr("r",w/4);p=d=>w/4*s(d*t/1e3/n);o.attr({"cx":d=>p(d)*c(d*π/n),"cy":d=>p(d)*s(d*π/n)});' + hashtag;
+const term = 'https://t.d3fc.io';
 
 const app = express();
 
@@ -27,21 +26,14 @@ app.use(express.static('public'));
 app.use('/lazyload.min.js', express.static('node_modules/lazyloadjs/build/lazyload.min.js'));
 
 app.get('/', function (req, res) {
-  client.get('search/tweets', {q: hashtag}, function(error, tweets, response) {
-    const statuses = tweets.statuses.map(function(status) {
-        return Object.assign({}, status, {
-          code: example/*status.text*/.replace(new RegExp(hashtag, 'gi'), '')
-        });
-      })
-      .filter(function(status, i) {
-        return status.code;
-      });
-    statuses.forEach(function(status) {
-      cache.set(status.id_str, status);
-    });
-    res.render('index', {
-      statuses: statuses
-    });
+  console.log('Request', req.ip);
+  const statuses = cache.get('statuses');
+  if (statuses == null) {
+    console.warn('Results cache miss');
+    return res.status(503).render('error');
+  }
+  res.render('index', {
+    statuses: statuses
   });
 });
 
@@ -52,10 +44,35 @@ app.get('/loading', function (req, res) {
 app.get('/:id_str', function (req, res) {
   const status = cache.get(req.params.id_str);
   if (status == null) {
+    console.warn('Item cache miss');
     return res.status(404).render('error');
   }
   res.render('item', status);
 });
 
+const updateSearchResults = () => {
+  console.log('Updating search results');
+  client.get('search/tweets', {q: term}, function(error, tweets, response) {
+    if (error) {
+      return console.warn(error);
+    }
+    console.log('Search completed', tweets.statuses.length);
+    const statuses = tweets.statuses.map(function(status) {
+        return Object.assign({}, status, {
+          code: status.text.replace(new RegExp(term, 'gi'), '')
+        });
+      })
+      .filter(function(status, i) {
+        return status.code;
+      });
+    statuses.forEach(function(status) {
+      cache.set(status.id_str, status);
+    });
+    cache.set('statuses', statuses);
+    console.log('Search results updated', statuses.length);
+  });
+}
+updateSearchResults();
+setInterval(updateSearchResults, 10 * 1000);
 
-app.listen(3000)
+app.listen(3000);
