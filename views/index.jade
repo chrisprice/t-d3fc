@@ -4,11 +4,22 @@ html(lang='en')
     title d3fc-tweet
   body
     script(type='text/javascript', src='lazyload.min.js')
+    h1 t.d3fc.io
+    h2 A collection of tweet-sized* d3 creations
+    p
+      small *116 characters +
+        a(href='https://github.com/chrisprice/t-d3fc/blob/master/public') helpers
+    p.
+      To add yours, just tweet the code followed by ' https://t.d3fc.io'. To help get the
+      size down, all code is transpiled by Babel (with es2015 and stage-2) presets and both
+      JavaScript and CSS helpers are provided.
     ul
       each status in statuses
         li
-          h3=status.user.name
-          pre=status.code
+          h3
+            a(href='https://twitter.com/'+status.user.screen_name)
+              =status.user.name
+          pre=status.es6
           iframe(
             src='loading',
             data-src=status.id_str,

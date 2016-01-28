@@ -9,6 +9,8 @@ const babel = require('babel-core');
 const searchTerm = 't.d3fc.io';
 const babelOptions = { presets: ['es2015', 'stage-2'] };
 
+const example = 'z=3,y=d=>w/4*s(d*t/1e3/z),j(rn(0,z),C).a({r:w/4,cx:d=>y(d)*c(d*π/z),cy:d=>y(d)*s(d*π/z)})';
+
 const app = express();
 
 app.set('view engine', 'jade');
