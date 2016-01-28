@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "dependencies": {
+    "cors": "^2.7.1",
+    "express": "^4.13.4",
+    "jade": "^1.11.0",
+    "lazyloadjs": "^3.2.2",
+    "lru-cache": "^4.0.0",
+    "twitter": "^1.2.5"
+  }
+}

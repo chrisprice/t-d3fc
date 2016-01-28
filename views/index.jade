@@ -1,0 +1,19 @@
+doctype html
+html(lang='en')
+  head
+    title d3fc-tweet
+  body
+    script(type='text/javascript', src='lazyload.min.js')
+    ul
+      each status in statuses
+        li
+          h3=status.user.name
+          pre=status.code
+          iframe(
+            src='loading',
+            data-src=status.id_str,
+            onload='lzld(this)',
+            width='500',
+            height='500',
+            sandbox='allow-scripts'
+          )
