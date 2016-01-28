@@ -32,6 +32,8 @@ d.selection.prototype.e = d.selection.prototype.each;
 d.selection.prototype.D = d.selection.prototype.data;
 d.selection.prototype.d = d.selection.prototype.datum;
 d.selection.prototype.r = d.selection.prototype.remove;
+d.selection.prototype.h = d.selection.prototype.html;
+d.selection.prototype.t = d.selection.prototype.text;
 
 // create a canvas
 const g = d.select("body")

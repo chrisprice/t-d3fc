@@ -6,9 +6,15 @@ svg {
   display: block;
 }
 
-circle, ellipse, line, path, polygon, polyline, rect, text {
+circle, ellipse, line, path, polygon, polyline, rect {
   fill:none;
   stroke: #222;
+}
+
+text {
+  text-anchor: middle;
+  dominant-baseline: middle;
+  fill: #222;
 }
 
 .f {
