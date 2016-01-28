@@ -1,6 +1,7 @@
 {
   "private": true,
   "dependencies": {
+    "babel-core": "^6.4.5",
     "cors": "^2.7.1",
     "express": "^4.13.4",
     "jade": "^1.11.0",

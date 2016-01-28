@@ -4,8 +4,9 @@ const Twitter = require('twitter');
 const express = require('express');
 const cors = require('cors');
 const LRU = require('lru-cache');
+const babel = require('babel-core');
 
-const term = 'https://t.d3fc.io';
+const searchTerm = 't.d3fc.io';
 
 const app = express();
 
@@ -52,18 +53,30 @@ app.get('/:id_str', function (req, res) {
 
 const updateSearchResults = () => {
   console.log('Updating search results');
-  client.get('search/tweets', {q: term}, function(error, tweets, response) {
+  client.get('search/tweets', {q: searchTerm}, function(error, tweets, response) {
     if (error) {
       return console.warn(error);
     }
     console.log('Search completed', tweets.statuses.length);
     const statuses = tweets.statuses.map(function(status) {
         return Object.assign({}, status, {
-          code: status.text.replace(new RegExp(term, 'gi'), '')
+          es6: status.entities.urls.reduce(function(text, url) {
+            return text.substring(0, url.indices[0]) + text.substring(url.indices[1]);
+          }, status.text)
         });
       })
+      .map(function(status) {
+        try {
+          return Object.assign({}, status, {
+            es5: babel.transform(status.es6, { }).code
+          });
+        } catch (e) {
+          console.log('Failed to transform', e);
+          return status;
+        }
+      })
       .filter(function(status, i) {
-        return status.code;
+        return status.es5;
       });
     statuses.forEach(function(status) {
       cache.set(status.id_str, status);
