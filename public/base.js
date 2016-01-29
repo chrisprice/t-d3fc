@@ -11,7 +11,9 @@ let x = {},
 
 const d = d3,
   ln = d.svg.line,
-  rn = d.range;
+  rn = d.range,
+  c1 = d.scale.category10,
+  c2 = d.scale.category20;
 
 const C = 'circle',
   E = 'ellipse',
