@@ -27,11 +27,37 @@ d.selection.prototype.d = d.selection.prototype.datum;
 d.selection.prototype.r = d.selection.prototype.remove;
 d.selection.prototype.h = d.selection.prototype.html;
 d.selection.prototype.t = d.selection.prototype.text;
+d.selection.prototype.o = d.selection.prototype.on;
+
+// mouse/touch positions
+let mo = [0, 0], to = [];
+
+const n = function(tuple) {
+  return [
+    tuple[0] / w - 0.5,
+    tuple[1] / h - 0.5
+  ];
+}
+
+function mouse() {
+  mo = n(d.mouse(this));
+}
+
+function touch() {
+  to = d3.touches(this).map(n);
+  mo = to[0] || [0, 0];
+}
 
 // create a canvas
 const g = d.select("body")
   .A("svg")
   .a("viewBox", '0 0 ' + w + ' ' + h)
+  .o("mouseenter", mouse)
+  .o("mousemove", mouse)
+  .o("mouseleave", function() { mo = [0, 0]; })
+  .o("touchstart", touch)
+  .o("touchmove", touch)
+  .o("touchend", touch)
   .A("g")
   .a("transform", "translate(" + [w / 2, h / 2] + ")");
 
