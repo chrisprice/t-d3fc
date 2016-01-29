@@ -15,24 +15,40 @@ html(lang='en')
           h3.text-muted t.d3fc.io
       div.jumbotron
         h1 A collection of tweet-sized* d3 creations
-          small &nbsp;*116 characters +&nbsp;
-            a(href='https://github.com/chrisprice/t-d3fc/blob/master/public') helpers
-        p.lead.
-          To add yours, just tweet the code followed by ' https://t.d3fc.io'. To help get the
-          size down, all code is transpiled by Babel (with es2015 and stage-2 presets) and both
-          JavaScript and CSS helpers are provided.
-      ul
+          p
+            small &nbsp;*116 characters +&nbsp;
+              a(href='https://github.com/chrisprice/t-d3fc/blob/master/public') helpers
+        p.lead
+          |To add yours, just tweet the code followed by
+          code &nbsp;https://t.d3fc.io
+          |. To help get the size down, all code is transpiled by Babel (with es2015 and stage-2 presets) and both&nbsp
+          a(href='https://github.com/chrisprice/t-d3fc/blob/master/public') JavaScript and CSS helpers
+          |&nbspare provided.
         each status in statuses
-          li
-            h3
-              a(href='https://twitter.com/'+status.user.screen_name)
-                =status.user.name
-            pre=status.es6
-            iframe(
-              src='loading',
-              data-src=status.id_str,
-              onload='lzld(this)',
-              width='500',
-              height='500',
-              sandbox='allow-scripts'
-            )
+          div.row
+            div.col-sm-12
+              div.thumbnail
+                iframe(
+                  src='loading',
+                  data-src=status.id_str,
+                  onload='lzld(this)',
+                  width='500',
+                  height='500',
+                  border='0',
+                  sandbox='allow-scripts'
+                )
+                div.caption
+                  h3
+                    a(href='https://twitter.com/'+status.user.screen_name)
+                      =status.user.name
+                  pre=status.es6
+                  p
+                    a.btn.btn-primary(
+                      href='https://twitter.com/'+status.user.screen_name +'/status/'+status.id_str
+                    ) View Tweet
+
+
+      footer.footer
+        p Piggy-backing the infrastructure of&nbsp;
+          a(href='https://d3fc.io/') d3fc
+          |&nbsp;since 2016
