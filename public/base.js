@@ -79,6 +79,7 @@ var a = Math.abs,
   as = Math.asin,
   ac = Math.acos,
   at = Math.atan,
+  r = Math.random,
   e = Math.E,
   π = Math.PI;
 
@@ -113,7 +114,8 @@ var C = j('circle'),
   PG = j('polygon'),
   PL = j('polyline'),
   R = j('rect'),
-  T = j('text');
+  T = j('text'),
+  G = j('g');
 
 // render loop
 d3.timer(function(t) {
