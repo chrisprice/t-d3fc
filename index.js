@@ -10,7 +10,7 @@ const ms = require('ms');
 const searchTerm = 't.d3fc.io';
 const babelOptions = { presets: ['es2015', 'stage-2'] };
 
-const example = 'z=3,y=d=>w/4*s(d*t/1e3/z),j(rn(0,z),C).a({r:w/4,cx:d=>y(d)*c(d*π/z),cy:d=>y(d)*s(d*π/z)})';
+const example = 'T().a({transform:d=>sc(4+s(d/1e3)),x:d=>mo[0]*10,y:d=>mo[1]*10}).t("Hello World")';
 
 const app = express();
 
@@ -55,7 +55,7 @@ app.get('/loading', (req, res) => {
   res.render('loading');
 });
 
-app.get('/:id_str', (req, res) => {
+app.get('/item/:id_str', (req, res) => {
   const status = cache.get(req.params.id_str);
   if (status == null) {
     console.warn('Item cache miss');
