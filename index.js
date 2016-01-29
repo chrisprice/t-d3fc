@@ -6,6 +6,9 @@ const cors = require('cors');
 const LRU = require('lru-cache');
 const babel = require('babel-core');
 const ms = require('ms');
+const Entities = require('html-entities').AllHtmlEntities;
+
+const entities = new Entities();
 
 const searchTerm = 't.d3fc.io';
 const babelOptions = { presets: ['es2015', 'stage-2'] };
@@ -77,9 +80,9 @@ const updateSearchResults = () => {
         if (cached != null) {
           return cached;
         }
-        const es6 = status.entities.urls.reduce((text, url) => {
+        const es6 = entities.decode(status.entities.urls.reduce((text, url) => {
           return text.substring(0, url.indices[0]) + text.substring(url.indices[1]);
-        }, status.text);
+        }, status.text));
         // const es6 = example;
         let es5 = null;
         try {
