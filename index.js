@@ -5,6 +5,7 @@ const express = require('express');
 const cors = require('cors');
 const LRU = require('lru-cache');
 const babel = require('babel-core');
+const ms = require('ms');
 
 const searchTerm = 't.d3fc.io';
 const babelOptions = { presets: ['es2015', 'stage-2'] };
@@ -26,8 +27,8 @@ const cache = LRU({
   length: 1000
 });
 
-app.use(express.static('public'));
-app.use('/lazyload.min.js', express.static('node_modules/lazyloadjs/build/lazyload.min.js'));
+app.use(express.static('public', { maxAge: '1h' }));
+app.use('/lazyload.min.js', express.static('node_modules/lazyloadjs/build/lazyload.min.js', { maxAge: '1d' }));
 
 app.get('/', function (req, res) {
   console.log('Request', req.ip);
@@ -36,12 +37,14 @@ app.get('/', function (req, res) {
     console.warn('Results cache miss');
     return res.status(503).render('error');
   }
+  res.set({ 'Cache-Control': 'public, max-age=' + ms('1m') });
   res.render('index', {
     statuses: statuses
   });
 });
 
 app.get('/loading', function (req, res) {
+  res.set({ 'Cache-Control': 'public, max-age=' + ms('1h') });
   res.render('loading');
 });
 
@@ -51,6 +54,7 @@ app.get('/:id_str', function (req, res) {
     console.warn('Item cache miss');
     return res.status(404).render('error');
   }
+  res.set({ 'Cache-Control': 'public, max-age=' + ms('1h') });
   res.render('item', status);
 });
 
@@ -90,6 +94,6 @@ const updateSearchResults = () => {
   });
 }
 updateSearchResults();
-setInterval(updateSearchResults, 10 * 1000);
+setInterval(updateSearchResults, ms('30s'));
 
 app.listen(3000);
