@@ -14,7 +14,7 @@ html(lang='en')
             a.active(href='/playground') Playground
     h1.text-center Playground
     div.content
-      textarea#code(rows='3', placeholder='Type code here').form-control.input-lg.
+      textarea#code(rows='3', placeholder='Type code here', spellcheck='false').form-control.input-lg.
         T().a({transform:d=>sc(4+s(d/1e3)),x:d=>mo[0]*10,y:d=>mo[1]*10}).t('Hello World')
       button#run-code.btn.btn-block.btn-lg.btn-success Run code
       div#iframe-wrapper
