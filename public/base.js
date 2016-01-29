@@ -28,6 +28,7 @@ d.selection.prototype.r = d.selection.prototype.remove;
 d.selection.prototype.h = d.selection.prototype.html;
 d.selection.prototype.t = d.selection.prototype.text;
 d.selection.prototype.o = d.selection.prototype.on;
+d.selection.prototype.y = d.selection.prototype.style;
 
 // mouse/touch positions
 var mo = [0, 0], to = [];
