@@ -46,7 +46,8 @@ app.get('/', function (req, res) {
 });
 
 app.get('/playground', function(req, res) {
-  res.render('playground/index');
+  res.set({ 'Cache-Control': 'public, max-age=' + ms('1h') });
+  res.render('playground');
 });
 
 app.get('/loading', function (req, res) {

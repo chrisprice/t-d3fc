@@ -6,24 +6,33 @@ html(lang='en')
     meta(name='viewport', content='width=device-width, initial-scale=1')
     title d3fc-tweet
     link(rel='stylesheet', href='bootstrap/css/bootstrap.min.css')
-    link(rel='stylesheet', href='jumbotron-narrow.css')
+    link(rel='stylesheet', href='site.css')
   body
     script(type='text/javascript', src='lazyload/lazyload.min.js')
     div.container
       div.header.clearfix
         nav
-          h3.text-muted t.d3fc.io
+          ul.nav.nav-pills.pull-right
+            li(role='presentation')
+              a(href='/playground') Playground
+          h3.text-muted
+            a(href='/') t.d3fc.io
       div.jumbotron
         h1 A collection of tweet-sized* d3 creations
           p
-            small &nbsp;*116 characters +&nbsp;
-              a(href='https://github.com/chrisprice/t-d3fc/blob/master/public') helpers
+            small &nbsp;*116 characters + helpers
         p.lead
           |To add yours, just tweet the code followed by
           code &nbsp;https://t.d3fc.io
-          |. To help get the size down, all code is transpiled by Babel (with es2015 and stage-2 presets) and both&nbsp
-          a(href='https://github.com/chrisprice/t-d3fc/blob/master/public') JavaScript and CSS helpers
-          |&nbspare provided.
+          |. To help get the size down, both
+          =' '
+          a(href='https://github.com/chrisprice/t-d3fc/blob/master/public') JavaScript
+          =' '
+          |and
+          =' '
+          a(href='https://github.com/chrisprice/t-d3fc/blob/master/public') CSS
+          =' '
+          |helpers are provided and all code is transpiled by Babel (es2015/stage-2).
       div.marketing
         each status in statuses
           div.row

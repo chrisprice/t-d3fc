@@ -15,15 +15,6 @@ const d = d3,
   c1 = d.scale.category10,
   c2 = d.scale.category20;
 
-const C = 'circle',
-  E = 'ellipse',
-  L = 'line',
-  P = 'path',
-  PG = 'polygon',
-  PL = 'polyline',
-  R = 'rect',
-  T = 'text';
-
 d.selection.prototype.a = d.selection.prototype.attr;
 d.selection.prototype.A = d.selection.prototype.append;
 d.selection.prototype.s = d.selection.prototype.select;
@@ -64,19 +55,42 @@ const a = Math.abs,
   e = Math.E,
   π = Math.PI;
 
-// datajoin utility function
-function j(data, element) {
-  var update = g.selectAll(element)
-      .data(data);
+const tr = 'transform',
+  ts = function(x, y) {
+    return 'translate(' + x + ',' + y + ')';
+  },
+  sc = function(f) {
+    return 'scale(' + f + ')';
+  },
+  rt = function(a) {
+    return 'rotate(' + a + ')';
+  };
 
-  update.e = update.enter()
-    .append(element);
-  update.x = update.exit();
-  return update;
+// datajoin utility function
+function j(element) {
+  return function(data) {
+    var update = g.selectAll(element)
+        .data(data || g.datum());
+    update.e = update.enter()
+      .append(element);
+    update.x = update.exit();
+    return update;
+  }
 }
+
+
+const C = j('circle'),
+  E = j('ellipse'),
+  L = j('line'),
+  P = j('path'),
+  PG = j('polygon'),
+  PL = j('polyline'),
+  R = j('rect'),
+  T = j('text');
 
 // render loop
 d3.timer(function(t) {
+  g.d([t]);
   if (window.tweet) {
     tweet(t);
   }
