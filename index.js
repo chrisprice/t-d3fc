@@ -32,7 +32,7 @@ app.use('/lazyload', express.static('node_modules/lazyloadjs/build', { maxAge: '
 app.use('/bootstrap', express.static('node_modules/bootstrap/dist', { maxAge: '1d' }));
 app.use('/babel-standalone.min.js', express.static('node_modules/babel-standalone/babel.min.js'));
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
   console.log('Request', req.ip);
   const statuses = cache.get('statuses');
   if (statuses == null) {
@@ -45,17 +45,17 @@ app.get('/', function (req, res) {
   });
 });
 
-app.get('/playground', function(req, res) {
+app.get('/playground', (req, res) => {
   res.set({ 'Cache-Control': 'public, max-age=' + ms('1h') });
   res.render('playground');
 });
 
-app.get('/loading', function (req, res) {
+app.get('/loading', (req, res) => {
   res.set({ 'Cache-Control': 'public, max-age=' + ms('1h') });
   res.render('loading');
 });
 
-app.get('/:id_str', function (req, res) {
+app.get('/:id_str', (req, res) => {
   const status = cache.get(req.params.id_str);
   if (status == null) {
     console.warn('Item cache miss');
@@ -67,17 +67,17 @@ app.get('/:id_str', function (req, res) {
 
 const updateSearchResults = () => {
   console.log('Updating search results');
-  client.get('search/tweets', {q: searchTerm}, function(error, tweets, response) {
+  client.get('search/tweets', {q: searchTerm}, (error, tweets, response) => {
     if (error) {
       return console.warn(error);
     }
     console.log('Search completed', tweets.statuses.length);
-    const statuses = tweets.statuses.map(function(status) {
+    const statuses = tweets.statuses.map((status) => {
         const cached = cache.get(status.id_str);
         if (cached != null) {
           return cached;
         }
-        const es6 = status.entities.urls.reduce(function(text, url) {
+        const es6 = status.entities.urls.reduce((text, url) => {
           return text.substring(0, url.indices[0]) + text.substring(url.indices[1]);
         }, status.text);
         // const es6 = example;
@@ -94,9 +94,7 @@ const updateSearchResults = () => {
         cache.set(status.id_str, processed);
         return processed;
       });
-    const validStatuses = statuses.filter(function(status) {
-      return status.es5;
-    });
+    const validStatuses = statuses.filter((status) => status.es5);
     cache.set('statuses', validStatuses);
     console.log('Search results updated', validStatuses.length);
   });
