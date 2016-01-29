@@ -1,0 +1,17 @@
+
+body {
+  width: 500px;
+  margin: 0 auto;
+}
+
+textarea {
+  width: 100%;
+  font-size: 20px;
+}
+
+button {
+  height: 50px;
+  width: 100%;
+  display: block;
+  margin: 20px 0;
+}

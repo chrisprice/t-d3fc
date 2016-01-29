@@ -30,6 +30,7 @@ const cache = LRU({
 app.use(express.static('public', { maxAge: '1h' }));
 app.use('/lazyload', express.static('node_modules/lazyloadjs/build', { maxAge: '1d' }));
 app.use('/bootstrap', express.static('node_modules/bootstrap/dist', { maxAge: '1d' }));
+app.use('/babel-standalone.min.js', express.static('node_modules/babel-standalone/babel.min.js'));
 
 app.get('/', function (req, res) {
   console.log('Request', req.ip);
@@ -42,6 +43,10 @@ app.get('/', function (req, res) {
   res.render('index', {
     statuses: statuses
   });
+});
+
+app.get('/playground', function(req, res) {
+  res.render('playground/index');
 });
 
 app.get('/loading', function (req, res) {
@@ -71,9 +76,10 @@ const updateSearchResults = () => {
         if (cached != null) {
           return cached;
         }
-        const es6 = status.entities.urls.reduce(function(text, url) {
-          return text.substring(0, url.indices[0]) + text.substring(url.indices[1]);
-        }, status.text);
+        // const es6 = status.entities.urls.reduce(function(text, url) {
+        //   return text.substring(0, url.indices[0]) + text.substring(url.indices[1]);
+        // }, status.text);
+        const es6 = example;
         let es5 = null;
         try {
            es5 = babel.transform(es6, babelOptions).code;
