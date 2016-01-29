@@ -28,7 +28,8 @@ const cache = LRU({
 });
 
 app.use(express.static('public', { maxAge: '1h' }));
-app.use('/lazyload.min.js', express.static('node_modules/lazyloadjs/build/lazyload.min.js', { maxAge: '1d' }));
+app.use('/lazyload', express.static('node_modules/lazyloadjs/build', { maxAge: '1d' }));
+app.use('/bootstrap', express.static('node_modules/bootstrap/dist', { maxAge: '1d' }));
 
 app.get('/', function (req, res) {
   console.log('Request', req.ip);

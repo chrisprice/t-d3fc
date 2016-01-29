@@ -1,30 +1,38 @@
 doctype html
 html(lang='en')
   head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
     title d3fc-tweet
+    link(rel='stylesheet', href='bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', href='jumbotron-narrow.css')
   body
-    script(type='text/javascript', src='lazyload.min.js')
-    h1 t.d3fc.io
-    h2 A collection of tweet-sized* d3 creations
-    p
-      small *116 characters +
-        a(href='https://github.com/chrisprice/t-d3fc/blob/master/public') helpers
-    p.
-      To add yours, just tweet the code followed by ' https://t.d3fc.io'. To help get the
-      size down, all code is transpiled by Babel (with es2015 and stage-2 presets) and both
-      JavaScript and CSS helpers are provided.
-    ul
-      each status in statuses
-        li
-          h3
-            a(href='https://twitter.com/'+status.user.screen_name)
-              =status.user.name
-          pre=status.es6
-          iframe(
-            src='loading',
-            data-src=status.id_str,
-            onload='lzld(this)',
-            width='500',
-            height='500',
-            sandbox='allow-scripts'
-          )
+    script(type='text/javascript', src='lazyload/lazyload.min.js')
+    div.container
+      div.header.clearfix
+        nav
+          h3.text-muted t.d3fc.io
+      div.jumbotron
+        h1 A collection of tweet-sized* d3 creations
+          small &nbsp;*116 characters +&nbsp;
+            a(href='https://github.com/chrisprice/t-d3fc/blob/master/public') helpers
+        p.lead.
+          To add yours, just tweet the code followed by ' https://t.d3fc.io'. To help get the
+          size down, all code is transpiled by Babel (with es2015 and stage-2 presets) and both
+          JavaScript and CSS helpers are provided.
+      ul
+        each status in statuses
+          li
+            h3
+              a(href='https://twitter.com/'+status.user.screen_name)
+                =status.user.name
+            pre=status.es6
+            iframe(
+              src='loading',
+              data-src=status.id_str,
+              onload='lzld(this)',
+              width='500',
+              height='500',
+              sandbox='allow-scripts'
+            )
