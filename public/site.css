@@ -127,6 +127,7 @@ iframe {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   max-width: 100%;
+  font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 #playground #run-code {

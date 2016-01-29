@@ -4,10 +4,16 @@ var textarea = document.getElementById('code');
 var button = document.getElementById('run-code');
 var iframe = document.getElementById('iframe');
 var htmlTempl = document.getElementById('template');
+const limit = 116;
+
+function updateStatus() {
+  var code = textarea.value;
+  textarea.style.background = (code.length > limit) ? '#d9534f' : 'none';
+  button.innerText = 'Run code (' + (limit - code.length) + ')';
+}
 
 function render() {
   var code = textarea.value;
-  textarea.style.background = (code.length > 116) ? '#d9534f' : 'none';
   var doc = iframe.contentWindow.document;
   doc.open();
   doc.write(
@@ -24,5 +30,7 @@ function compile(code) {
   return Babel.transform(code, { presets: ['es2015', 'stage-2'] }).code;
 }
 
+textarea.addEventListener('input', updateStatus);
 button.addEventListener('click',  render);
 render();
+updateStatus();
