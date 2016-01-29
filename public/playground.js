@@ -5,7 +5,7 @@ var button = document.getElementById('run-code');
 var iframe = document.getElementById('iframe');
 var htmlTempl = document.getElementById('template');
 var alert = document.getElementById('alert');
-const limit = 116;
+var limit = 116;
 
 function hideError() {
   alert.style.display = 'none';
