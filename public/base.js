@@ -80,7 +80,9 @@ var a = Math.abs,
   ac = Math.acos,
   at = Math.atan,
   e = Math.E,
-  π = Math.PI;
+  π = Math.PI,
+  p = Math.pow,
+  sr = function(x) { return x * x; };
 
 var tr = 'transform',
   ts = function(x, y) {
@@ -113,7 +115,8 @@ var C = j('circle'),
   PG = j('polygon'),
   PL = j('polyline'),
   R = j('rect'),
-  T = j('text');
+  T = j('text'),
+  G = j('g');
 
 // render loop
 d3.timer(function(t) {
