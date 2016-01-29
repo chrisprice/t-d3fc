@@ -1,15 +1,15 @@
 'use strict';
 
-const w = 500, // width
+var w = 500, // width
   h = 500; // height
 
-let x = {},
+var x = {},
   y = [],
   z = 0,
   $ = '',
   _ = null;
 
-const d = d3,
+var d = d3,
   ln = d.svg.line,
   rn = d.range,
   c1 = d.scale.category10,
@@ -30,9 +30,9 @@ d.selection.prototype.t = d.selection.prototype.text;
 d.selection.prototype.o = d.selection.prototype.on;
 
 // mouse/touch positions
-let mo = [0, 0], to = [];
+var mo = [0, 0], to = [];
 
-const n = function(tuple) {
+var n = function(tuple) {
   return [
     tuple[0] / w - 0.5,
     tuple[1] / h - 0.5
@@ -49,7 +49,7 @@ function touch() {
 }
 
 // create a canvas
-const g = d.select("body")
+var g = d.select("body")
   .A("svg")
   .a("viewBox", '0 0 ' + w + ' ' + h)
   .o("mouseenter", mouse)
@@ -62,7 +62,7 @@ const g = d.select("body")
   .a("transform", "translate(" + [w / 2, h / 2] + ")");
 
 // aliases
-const a = Math.abs,
+var a = Math.abs,
   ce = Math.ceil,
   fl = Math.floor,
   ro = Math.round,
@@ -81,7 +81,7 @@ const a = Math.abs,
   e = Math.E,
   π = Math.PI;
 
-const tr = 'transform',
+var tr = 'transform',
   ts = function(x, y) {
     return 'translate(' + x + ',' + y + ')';
   },
@@ -105,7 +105,7 @@ function j(element) {
 }
 
 
-const C = j('circle'),
+var C = j('circle'),
   E = j('ellipse'),
   L = j('line'),
   P = j('path'),

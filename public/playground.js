@@ -1,14 +1,22 @@
 'use strict';
 
-const textarea = document.getElementById('code');
-const button = document.getElementById('run-code');
-const iframe = document.getElementById('iframe');
-const htmlTempl = document.getElementById('template');
+var textarea = document.getElementById('code');
+var button = document.getElementById('run-code');
+var iframe = document.getElementById('iframe');
+var htmlTempl = document.getElementById('template');
 
 function render() {
-  const code = textarea.value;
+  var code = textarea.value;
   textarea.style.background = (code.length > 116) ? '#d9534f' : 'none';
-  iframe.contentWindow.eval('function tweet(t) {' + compile(code) + '}');
+  var doc = iframe.contentWindow.document;
+  doc.open();
+  doc.write(
+    '<html lang="en"><head><link rel="stylesheet" href="base.css"></head><body>' +
+    '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.13/d3.js"></script>' +
+    '<script type="text/javascript" src="base.js"></script>' +
+    '<script>function tweet(t) {' + compile(code) + '}</script>' +
+    '</body></html>');
+  doc.close();
 }
 
 function compile(code) {
@@ -17,3 +25,4 @@ function compile(code) {
 }
 
 button.addEventListener('click',  render);
+render();
