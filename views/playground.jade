@@ -7,11 +7,11 @@ html(lang='en')
   body#playground.container
     div.header.clearfix
       nav
-        ul.nav.nav-pills.pull-right
-          li(role='presentation')
-            a(href='/playground') Playground
-        h3.text-muted
-          a(href='/') t.d3fc.io
+        ul.nav.navbar-nav
+          li
+            a.brand.text-muted(href='/') t.d3fc.io
+          li
+            a.active(href='/playground') Playground
     h1.text-center Playground
     div.content
       textarea#code(rows='3', placeholder='Type code here').form-control.input-lg.

@@ -77,10 +77,9 @@ const updateSearchResults = () => {
         if (cached != null) {
           return cached;
         }
-        // const es6 = status.entities.urls.reduce(function(text, url) {
-        //   return text.substring(0, url.indices[0]) + text.substring(url.indices[1]);
-        // }, status.text);
-        const es6 = example;
+        const es6 = status.entities.urls.reduce(function(text, url) {
+          return text.substring(0, url.indices[0]) + text.substring(url.indices[1]);
+        }, status.text);
         let es5 = null;
         try {
            es5 = babel.transform(es6, babelOptions).code;
