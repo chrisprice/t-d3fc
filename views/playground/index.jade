@@ -2,19 +2,20 @@ doctype html
 html(lang='en')
   head
     title d3fc-tweet
+    link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
     link(rel='stylesheet', href='base.css')
-  body
+  body#playground.container
     script(type='text/javascript', src='/babel-standalone.min.js')
-    h1 t.d3fc.io
-    h2 Playground
-    textarea#code(rows='3')
-    button#run-code Run code
-    iframe(
-      id='iframe',
-      width='500',
-      height='500',
-      sandbox='allow-scripts allow-same-origin',
-      srcdoc='<html lang="en"><head><link rel="stylesheet" href="/base.css"></head><body><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.13/d3.js"></script><script type="text/javascript" src="/base.js"></script></body></html>'
-    )
+    h1.text-center t.d3fc.io
+    h2.text-center Playground
+    textarea#code(rows='3').form-control.input-lg
+    button#run-code.btn.btn-block.btn-lg.btn-primary Run code
+    div#iframe-wrapper
+      iframe(
+        id='iframe',
+        sandbox='allow-scripts allow-same-origin',
+        srcdoc='<html lang="en"><head><link rel="stylesheet" href="/base.css"></head><body><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.13/d3.js"></script><script type="text/javascript" src="/base.js"></script></body></html>'
+      )
+      
     script(type='text/javascript', src='base.js')
     

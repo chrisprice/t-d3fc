@@ -40,8 +40,7 @@ d.selection.prototype.t = d.selection.prototype.text;
 // create a canvas
 const g = d.select("body")
   .A("svg")
-  .a("width", w)
-  .a("height", h)
+  .a("viewBox", '0 0 ' + w + ' ' + h)
   .A("g")
   .a("transform", "translate(" + [w / 2, h / 2] + ")");
 
