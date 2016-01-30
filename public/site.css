@@ -80,11 +80,6 @@ nav .nav > li{
   font-size: 21px;
 }
 
-iframe {
-  margin-top: 30px;
-  border: 0;
-}
-
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
   /* Remove the padding we set earlier */
@@ -137,20 +132,23 @@ iframe {
   border-top-right-radius: 0;
 }
 
-#iframe-wrapper {
+.iframe-wrapper {
   position: relative;
   height: 0;
   width: 100%;
+  margin-top: 30px;
   padding-bottom: 100%;
 }
 
-#iframe {
+.iframe-wrapper>iframe {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   border: none;
 }
 
-#iframe svg {
+.iframe-wrapper>iframe svg {
   width: 100%;
 }

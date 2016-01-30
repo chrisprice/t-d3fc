@@ -44,14 +44,13 @@ html(lang='en')
           div.row
             div.col-sm-12
               div.thumbnail
-                iframe(
-                  src='loading',
-                  data-src='item/'+status.id_str,
-                  onload='lzld(this)',
-                  width='500',
-                  height='500',
-                  sandbox='allow-scripts'
-                )
+                div.iframe-wrapper
+                  iframe(
+                    src='loading',
+                    data-src='item/'+status.id_str,
+                    onload='lzld(this)',
+                    sandbox='allow-scripts'
+                  )
                 div.caption
                   h3
                     a(href='https://twitter.com/'+status.user.screen_name)
