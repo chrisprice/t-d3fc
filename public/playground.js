@@ -37,7 +37,7 @@ function render() {
     '<html lang="en"><head><link rel="stylesheet" href="base.css"></head><body>' +
     '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.13/d3.js"></script>' +
     '<script type="text/javascript" src="base.js"></script>' +
-    '<script>function tweet(t) {' + es5 + '}</script>' +
+    '<script>function tweet(t) {\n  ' + es5 + '\n}</script>' +
     '</body></html>');
   doc.close();
 }
