@@ -43,19 +43,19 @@ app.get('/', (req, res) => {
     winston.warn('Results cache miss');
     return res.status(503).render('error');
   }
-  res.set({ 'Cache-Control': 'public, max-age=' + ms('1m') });
+  res.set({ 'Cache-Control': 'public, max-age=' + ms('1m') / 1e3 });
   res.render('index', {
     statuses: statuses
   });
 });
 
 app.get('/playground', (req, res) => {
-  res.set({ 'Cache-Control': 'public, max-age=' + ms('1h') });
+  res.set({ 'Cache-Control': 'public, max-age=' + ms('1h') / 1e3 });
   res.render('playground');
 });
 
 app.get('/loading', (req, res) => {
-  res.set({ 'Cache-Control': 'public, max-age=' + ms('1h') });
+  res.set({ 'Cache-Control': 'public, max-age=' + ms('1h') / 1e3 });
   res.render('loading');
 });
 
@@ -65,7 +65,7 @@ app.get('/item/:id_str', (req, res) => {
     winston.warn('Item cache miss');
     return res.status(404).render('error');
   }
-  res.set({ 'Cache-Control': 'public, max-age=' + ms('1h') });
+  res.set({ 'Cache-Control': 'public, max-age=' + ms('1h') / 1e3 });
   res.render('item', status);
 });
 
