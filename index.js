@@ -75,7 +75,6 @@ const updateSearchResults = () => {
     if (error) {
       return winston.warn(error);
     }
-    console.log(JSON.stringify(tweets, null, 2));
     winston.info('Search completed', tweets.statuses.length);
     const statuses = tweets.statuses.filter((status) => !status.retweeted_status)
       .map((status) => {
