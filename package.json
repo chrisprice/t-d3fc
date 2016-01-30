@@ -13,6 +13,7 @@
     "lazyloadjs": "^3.2.2",
     "lru-cache": "^4.0.0",
     "ms": "^0.7.1",
-    "twitter": "^1.2.5"
+    "twitter": "^1.2.5",
+    "winston": "^2.1.1"
   }
 }

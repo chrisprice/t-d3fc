@@ -1,14 +1,15 @@
 'use strict';
 
+const winston = require('winston');
 const Twitter = require('twitter');
 const express = require('express');
 const cors = require('cors');
 const LRU = require('lru-cache');
 const babel = require('babel-core');
 const ms = require('ms');
-const Entities = require('html-entities').AllHtmlEntities;
+const AllHtmlEntities = require('html-entities').AllHtmlEntities;
 
-const entities = new Entities();
+const htlmEntities = new AllHtmlEntities();
 
 const searchTerm = 't.d3fc.io';
 const babelOptions = { presets: ['es2015', 'stage-2'] };
@@ -36,10 +37,10 @@ app.use('/bootstrap', express.static('node_modules/bootstrap/dist', { maxAge: '1
 app.use('/babel-standalone.min.js', express.static('node_modules/babel-standalone/babel.min.js'));
 
 app.get('/', (req, res) => {
-  console.log('Request', req.ip);
+  winston.info('Request', req.ip);
   const statuses = cache.get('statuses');
   if (statuses == null) {
-    console.warn('Results cache miss');
+    winston.warn('Results cache miss');
     return res.status(503).render('error');
   }
   res.set({ 'Cache-Control': 'public, max-age=' + ms('1m') });
@@ -61,7 +62,7 @@ app.get('/loading', (req, res) => {
 app.get('/item/:id_str', (req, res) => {
   const status = cache.get(req.params.id_str);
   if (status == null) {
-    console.warn('Item cache miss');
+    winston.warn('Item cache miss');
     return res.status(404).render('error');
   }
   res.set({ 'Cache-Control': 'public, max-age=' + ms('1h') });
@@ -69,26 +70,37 @@ app.get('/item/:id_str', (req, res) => {
 });
 
 const updateSearchResults = () => {
-  console.log('Updating search results');
+  winston.info('Updating search results');
   client.get('search/tweets', {q: searchTerm}, (error, tweets, response) => {
     if (error) {
-      return console.warn(error);
+      return winston.warn(error);
     }
-    console.log('Search completed', tweets.statuses.length);
-    const statuses = tweets.statuses.map((status) => {
+    console.log(JSON.stringify(tweets, null, 2));
+    winston.info('Search completed', tweets.statuses.length);
+    const statuses = tweets.statuses.filter((status) => !status.retweeted_status)
+      .map((status) => {
         const cached = cache.get(status.id_str);
         if (cached != null) {
           return cached;
         }
-        const es6 = entities.decode(status.entities.urls.reduce((text, url) => {
-          return text.substring(0, url.indices[0]) + text.substring(url.indices[1]);
-        }, status.text));
+        const entities = [].concat(
+          status.entities.urls,
+          status.entities.hashtags,
+          status.entities.user_mentions
+        );
+        const es6 = htlmEntities.decode(
+          entities.reduce(
+            (text, entity) =>
+              text.substring(0, entity.indices[0]) +
+              text.substring(entity.indices[1]),
+            status.text)
+        );
         // const es6 = example;
         let es5 = null;
         try {
            es5 = babel.transform(es6, babelOptions).code;
         } catch (e) {
-          console.log('Failed to transform', status.id_str, e);
+          winston.info('Failed to transform', status.id_str, e);
         }
         const processed = Object.assign({}, status, {
           es5: es5,
@@ -99,7 +111,7 @@ const updateSearchResults = () => {
       });
     const validStatuses = statuses.filter((status) => status.es5);
     cache.set('statuses', validStatuses);
-    console.log('Search results updated', validStatuses.length);
+    winston.info('Search results updated', validStatuses.length);
   });
 }
 updateSearchResults();
