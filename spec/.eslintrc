@@ -1,0 +1,10 @@
+{
+  "ecmaFeatures": {
+    "arrowFunctions": true,
+    "blockBindings": true
+  },
+  "env": {
+    "jasmine": true,
+    "node": true
+  }
+}

@@ -13,7 +13,8 @@ const stripTwitterEntities = (status) => {
       status.entities.urls,
       status.entities.hashtags,
       status.entities.user_mentions
-    );
+    )
+    .sort((a,b) => b.indices[0] - a.indices[0]);
   return entities.reduce(
     (text, entity) =>
       text.substring(0, entity.indices[0]) +

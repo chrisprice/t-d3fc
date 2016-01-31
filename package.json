@@ -15,5 +15,13 @@
     "ms": "^0.7.1",
     "twitter": "^1.2.5",
     "winston": "^2.1.1"
+  },
+  "scripts": {
+    "lint": "eslint spec/**.js",
+    "test": "jasmine-node spec/**Spec.js"
+  },
+  "devDependencies": {
+    "eslint": "^1.10.3",
+    "jasmine-node": "^1.14.5"
   }
 }
