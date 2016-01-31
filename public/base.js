@@ -92,7 +92,8 @@ var tr = 'transform',
   },
   rt = function(a) {
     return 'rotate(' + a + ')';
-  };
+  },
+  op = 'opacity';
 
 // datajoin utility function
 function j(element) {
