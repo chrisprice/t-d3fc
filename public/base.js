@@ -81,7 +81,8 @@ var a = Math.abs,
   at = Math.atan,
   r = Math.random,
   e = Math.E,
-  π = Math.PI;
+  π = Math.PI,
+  dd = Date.now;
 
 var tr = 'transform',
   ts = function(x, y) {
