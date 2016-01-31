@@ -4,6 +4,7 @@ const winston = require('winston');
 const Twitter = require('twitter');
 const cache = require('./cache');
 const parse = require('./parse');
+const uniq = require('uniq');
 
 const searchTerm = 't.d3fc.io';
 
@@ -28,8 +29,15 @@ module.exports = () => {
         .filter((status) => !status.retweeted_status)
         .map(parse);
       const validStatuses = statuses.filter((status) => status.es5);
-      cache.statuses(validStatuses);
-      winston.info('Search results updated', validStatuses.length);
+      winston.info('Valid statuses', validStatuses.length);
+      const existingStatuses = cache.statuses();
+      winston.info('Existing statuses', validStatuses.length);
+      const mergedStatuses = uniq(
+        existingStatuses ? validStatuses.concat(cache.statuses()) : validStatuses,
+        (a, b) => b.id_str.localeCompare(a.id_str)
+      );
+      cache.statuses(mergedStatuses);
+      winston.info('Merged statuses', mergedStatuses.length);
     }
   );
 };
