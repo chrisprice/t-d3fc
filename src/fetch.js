@@ -16,16 +16,20 @@ const client = new Twitter({
 
 module.exports = () => {
   winston.info('Updating search results');
-  client.get('search/tweets', {q: searchTerm}, (error, tweets, response) => {
-    if (error) {
-      return winston.warn(error);
+  client.get(
+    'search/tweets',
+    { q: searchTerm, count: 100 },
+    (error, tweets, response) => {
+      if (error) {
+        return winston.warn(error);
+      }
+      winston.info('Search completed', tweets.statuses.length);
+      const statuses = tweets.statuses
+        .filter((status) => !status.retweeted_status)
+        .map(parse);
+      const validStatuses = statuses.filter((status) => status.es5);
+      cache.statuses(validStatuses);
+      winston.info('Search results updated', validStatuses.length);
     }
-    winston.info('Search completed', tweets.statuses.length);
-    const statuses = tweets.statuses
-      .filter((status) => !status.retweeted_status)
-      .map(parse);
-    const validStatuses = statuses.filter((status) => status.es5);
-    cache.statuses(validStatuses);
-    winston.info('Search results updated', validStatuses.length);
-  });
+  );
 };
