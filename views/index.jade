@@ -1,93 +1,23 @@
-doctype html
-html(lang='en')
-  head
-    meta(charset='utf-8')
-    meta(http-equiv='X-UA-Compatible', content='IE=edge')
-    meta(name='viewport', content='width=device-width, initial-scale=1')
-    meta(name='twitter:card', content='summary')
-    meta(name='twitter:site', content='@100pxls')
-    meta(name='twitter:title', content='t.d3fc.io')
-    meta(name='twitter:description', content='A collection of tweet-sized d3 creations')
-    title t.d3fc.io
-    link(rel='stylesheet', href='bootstrap/css/bootstrap.min.css')
-    link(rel='stylesheet', href='site.css')
-    link(rel='icon', type='image/png', href='https://d3fc.io/images/favicon-16x16.png', sizes='16x16')
-    link(rel='icon', type='image/png', href='https://d3fc.io/images/favicon-32x32.png', sizes='32x32')
-    link(rel='icon', type='image/png', href='https://d3fc.io/images/favicon-96x96.png', sizes='96x96')
-  body.container
-    script(type='text/javascript', src='lazyload/lazyload.min.js')
-    div
-      div.header.clearfix
-        nav
-          ul.nav.navbar-nav
-            li
-              a.brand.text-muted(href='/') t.d3fc.io
-            li
-              a(href='/new') New
-            li
-              a(href='/playground') Playground
-      div.alert.alert-danger
-        p.
-          The site has ended up being a wee-bit more popular than expected, which is great!
-          Unfortunately Twitter's search API isn't behaving as expected so we're dropping older (amazing!)
-          tweets. I'm sorry to those who've invested the time creating animations which are currently missing and hope to
-          get things sorted soon.
-        p.
-          Also, due to the hidden complexities of
-          #[a(href='http://blog.codepen.io/2014/02/17/can-iframes-annoying-free/') iframe sandboxing]
-          it's possible for ne'er-do-well-ers to create dialogs. I can't blame them, but I will be banning them.
-        p
-          a(href='https://twitter.com/100pxls') Chris
-      div.jumbotron
-        h1 A collection of tweet-sized* d3 creations
-          p
-            small &nbsp;*116 characters + helpers
-        p.lead
-          |To add yours, just tweet the code followed by
-          code &nbsp;https://t.d3fc.io
-          |. To help get the size down, both
-          =' '
-          a(href='https://github.com/chrisprice/t-d3fc/blob/master/public/base.js') JavaScript
-          =' '
-          |and
-          =' '
-          a(href='https://github.com/chrisprice/t-d3fc/blob/master/public/base.css') CSS
-          =' '
-          |helpers are provided and all code is transpiled by Babel (es2015/stage-2). Any suggestions welcome on
-          =' '
-          a(href='https://github.com/chrisprice/t-d3fc/issues') GitHub
-          |.
-      div.marketing
-        each status in statuses
-          div.row
-            div.col-sm-12
-              div.thumbnail
-                div.iframe-wrapper
-                  iframe(
-                    src='loading',
-                    data-src='item/'+status.id_str,
-                    onload='lzld(this)',
-                    sandbox='allow-scripts'
-                  )
-                div.caption
-                  h3
-                    a(href='https://twitter.com/'+status.user.screen_name)
-                      =status.user.name
-                  pre=status.es6
-                  p
-                    span(class='glyphicon glyphicon-retweet', aria-hidden="true")
-                    =' '+status.retweet_count
-                    |&nbsp;
-                    |&nbsp;
-                    span(class='glyphicon glyphicon-heart', aria-hidden="true")
-                    =' '+status.favorite_count
-                  p
-                    a.btn.btn-primary(
-                      href='https://twitter.com/'+status.user.screen_name +'/status/'+status.id_str
-                    ) View Tweet
-
-
-      footer.footer
-        p Piggy-backing the infrastructure of&nbsp;
-          a(href='https://d3fc.io/') d3fc
-          |&nbsp;since 2016
+block content
+  div.jumbotron
+    h1 A collection of tweet-sized* d3 creations
+      p
+        small &nbsp;*116 characters + helpers
+    p.lead.
+      To add yours, just tweet the code followed by #[code &nbsp;https://t.d3fc.io].
+      To help get the size down, both
+      #[a(href='https://github.com/chrisprice/t-d3fc/blob/master/public/base.js') JavaScript]
+      and
+      #[a(href='https://github.com/chrisprice/t-d3fc/blob/master/public/base.css') CSS]
+      helpers are provided and all code is transpiled by Babel (es2015/stage-2).
+      Any suggestions welcome on
+      #[a(href='https://github.com/chrisprice/t-d3fc/issues') GitHub].
+  div.alert.alert-warning
+    p.
+      Due to the hidden complexities of
+      #[a(href='http://blog.codepen.io/2014/02/17/can-iframes-annoying-free/') iframe sandboxing]
+      it's possible for ne'er-do-well-ers to create dialogs. I can't blame them, but I will be banning them.
+    p
+      a(href='https://twitter.com/100pxls') Chris
+  div.marketing
+    include ./_includes/statuses.jade

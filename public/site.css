@@ -101,11 +101,6 @@ nav .nav > li{
 
 /* PLAYGROUND PAGE */
 
-#playground {
-  padding-top: 20px;
-  padding-bottom: 40px;
-}
-
 #playground .content {
   margin: 0 auto;
   padding-bottom: 100px;
@@ -118,6 +113,7 @@ nav .nav > li{
 }
 
 #playground textarea {
+  white-space: pre;
   margin-top: 50px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -130,6 +126,10 @@ nav .nav > li{
   margin-top: -1px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+#playground #alert {
+  white-space: pre;
 }
 
 .iframe-wrapper {
