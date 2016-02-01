@@ -41,7 +41,25 @@ app.get('/', (req, res) => {
   }
   cacheControl(res, { maxAge: '1m' });
   res.render('index', {
-    statuses: statuses
+    route: '/',
+    statuses: statuses.slice()
+      .sort((a, b) =>
+        (b.favorite_count + b.retweet_count) - (a.favorite_count + a.retweet_count)
+      )
+  });
+});
+
+app.get('/new', (req, res) => {
+  const statuses = cache.statuses();
+  if (statuses == null) {
+    winston.warn('Results cache miss');
+    return res.status(503).render('error');
+  }
+  cacheControl(res, { maxAge: '1m' });
+  res.render('new', {
+    route: '/new',
+    statuses: statuses.slice()
+      .sort((a, b) => b.id_str.localeCompare(a.id_str))
   });
 });
 

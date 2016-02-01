@@ -19,28 +19,9 @@ html(lang='en')
             li
               a.brand.text-muted(href='/') t.d3fc.io
             li
-              a(href='/new') New
+              a.active(href='/new') New
             li
               a(href='/playground') Playground
-      div.jumbotron
-        h1 A collection of tweet-sized* d3 creations
-          p
-            small &nbsp;*116 characters + helpers
-        p.lead
-          |To add yours, just tweet the code followed by
-          code &nbsp;https://t.d3fc.io
-          |. To help get the size down, both
-          =' '
-          a(href='https://github.com/chrisprice/t-d3fc/blob/master/public/base.js') JavaScript
-          =' '
-          |and
-          =' '
-          a(href='https://github.com/chrisprice/t-d3fc/blob/master/public/base.css') CSS
-          =' '
-          |helpers are provided and all code is transpiled by Babel (es2015/stage-2). Any suggestions welcome on
-          =' '
-          a(href='https://github.com/chrisprice/t-d3fc/issues') GitHub
-          |.
       div.marketing
         each status in statuses
           div.row
