@@ -4,7 +4,7 @@ const winston = require('winston');
 const Twitter = require('twitter');
 const cache = require('./cache');
 const parse = require('./parse');
-const uniq = require('uniq');
+const querystring = require('querystring');
 
 const searchTerm = 't.d3fc.io';
 
@@ -15,29 +15,46 @@ const client = new Twitter({
   access_token_secret: process.env.access_token_secret
 });
 
-module.exports = () => {
-  winston.info('Updating search results');
+const fetch = (maxId, cb) => {
+  winston.info('fetch', maxId);
   client.get(
     'search/tweets',
-    { q: searchTerm, count: 100 },
+    { q: searchTerm, count: 100, max_id: maxId },
     (error, tweets, response) => {
       if (error) {
+        winston.warn(error);
+        return cb(error, []);
+      }
+      winston.info('fetch response', tweets.statuses.length);
+      const statuses = tweets.statuses;
+      const nextResults = tweets.search_metadata.next_results;
+      if (nextResults == null) {
+        return cb(null, statuses);
+      }
+      const params = querystring.parse(nextResults.substr(1));
+      fetch(params.max_id, (error, olderStatuses) => {
+        cb(error, statuses.concat(olderStatuses));
+      });
+    }
+  );
+};
+
+
+module.exports = () => {
+  winston.info('Updating search results');
+  fetch(
+    undefined,
+    (error, statuses) => {
+      if (error) {
+        // ignore errors, we'll recover next time round
         return winston.warn(error);
       }
-      winston.info('Search completed', tweets.statuses.length);
-      const statuses = tweets.statuses
-        .filter((status) => !status.retweeted_status)
-        .map(parse);
-      const validStatuses = statuses.filter((status) => status.es5);
+      winston.info('Search completed', statuses.length);
+      const validStatuses = statuses.filter((status) => !status.retweeted_status)
+        .map(parse)
+        .filter((status) => status.es5);
       winston.info('Valid statuses', validStatuses.length);
-      const existingStatuses = cache.statuses();
-      winston.info('Existing statuses', existingStatuses.length);
-      const mergedStatuses = uniq(
-        existingStatuses ? validStatuses.concat(cache.statuses()) : validStatuses,
-        (a, b) => b.id_str.localeCompare(a.id_str)
-      );
-      cache.statuses(mergedStatuses);
-      winston.info('Merged statuses', mergedStatuses.length);
+      cache.statuses(validStatuses);
     }
   );
 };

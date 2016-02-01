@@ -1,0 +1,14 @@
+{
+  "ecmaFeatures": {
+    "arrowFunctions": true,
+    "blockBindings": true,
+    "objectLiteralShorthandMethods": true,
+    "objectLiteralShorthandProperties": true
+  },
+  "env": {
+    "node": true
+  },
+  "rules": {
+    "no-undef": 2
+  }
+}
