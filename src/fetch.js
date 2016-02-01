@@ -31,7 +31,7 @@ module.exports = () => {
       const validStatuses = statuses.filter((status) => status.es5);
       winston.info('Valid statuses', validStatuses.length);
       const existingStatuses = cache.statuses();
-      winston.info('Existing statuses', validStatuses.length);
+      winston.info('Existing statuses', existingStatuses.length);
       const mergedStatuses = uniq(
         existingStatuses ? validStatuses.concat(cache.statuses()) : validStatuses,
         (a, b) => b.id_str.localeCompare(a.id_str)
