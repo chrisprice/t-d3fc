@@ -15,6 +15,10 @@ app.set('view engine', 'jade');
 
 const cacheControlSettings = { maxAge: '1h' };
 
+app.use((req, res, next) => {
+  winston.info(req.method, req.url, req.ip);
+  next();
+});
 app.use(express.static('public', cacheControlSettings));
 app.use(
   '/lazyload',
@@ -30,7 +34,6 @@ app.use(
 );
 
 app.get('/', (req, res) => {
-  winston.info('Request', req.ip);
   const statuses = cache.statuses();
   if (statuses == null) {
     winston.warn('Results cache miss');
