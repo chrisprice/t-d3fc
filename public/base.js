@@ -87,8 +87,8 @@ var tr = 'transform',
   ts = function(x, y) {
     return 'translate(' + x + ',' + y + ')';
   },
-  sc = function(f) {
-    return 'scale(' + f + ')';
+  sc = function(f, g) {
+    return 'scale(' + f + ',' + (arguments.length > 1 ? g : f) + ')';
   },
   rt = function(a) {
     return 'rotate(' + a + ')';
