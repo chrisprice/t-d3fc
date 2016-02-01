@@ -1,6 +1,7 @@
 FROM node:slim
 WORKDIR /app
-COPY node_modules node_modules
+COPY package.json package.json
+RUN npm install
 COPY public public
 COPY src src
 COPY views views
