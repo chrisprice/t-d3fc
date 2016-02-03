@@ -93,7 +93,8 @@ var tr = 'transform',
   rt = function(a) {
     return 'rotate(' + a + ')';
   },
-  op = 'opacity';
+  op = 'opacity',
+  pts= 'points';
 
 // datajoin utility function
 function j(element) {
