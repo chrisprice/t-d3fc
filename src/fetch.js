@@ -62,6 +62,7 @@ module.exports = () => {
         .filter((status) => bannedStatusIdStrs.indexOf(status.id_str) === -1)
         .filter((status) => bannedUserIds.indexOf(status.user.screen_name) === -1)
         .map(parse)
+        .filter((status) => status.es6.trim())
         .filter((status) => status.es5);
       winston.info('Valid statuses', validStatuses.length);
       cache.statuses(validStatuses);
