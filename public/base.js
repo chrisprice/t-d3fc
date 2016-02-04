@@ -94,7 +94,9 @@ var tr = 'transform',
     return 'rotate(' + a + ')';
   },
   op = 'opacity',
-  pts= 'points';
+  pts = 'points',
+  sk = 'stroke',
+  f = 'fill';
 
 // datajoin utility function
 function j(element) {
