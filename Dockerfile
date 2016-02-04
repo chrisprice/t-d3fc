@@ -7,7 +7,7 @@ RUN npm install
 
 COPY public src views index.js ./
 
-ENV database=postgres
+ENV database=localhost
 
 EXPOSE 3000
 
