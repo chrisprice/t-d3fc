@@ -8,6 +8,14 @@ const querystring = require('querystring');
 
 const searchTerm = 't.d3fc.io';
 
+const bannedUserIds = [
+  'BackwardSpy',
+];
+
+const bannedStatusIdStrs = [
+  '695016836237172737'
+];
+
 const client = new Twitter({
   consumer_key: process.env.consumer_key,
   consumer_secret: process.env.consumer_secret,
@@ -51,6 +59,8 @@ module.exports = () => {
       }
       winston.info('Search completed', statuses.length);
       const validStatuses = statuses.filter((status) => !status.retweeted_status)
+        .filter((status) => bannedStatusIdStrs.indexOf(status.id_str) === -1)
+        .filter((status) => bannedUserIds.indexOf(status.user.screen_name) === -1)
         .map(parse)
         .filter((status) => status.es5);
       winston.info('Valid statuses', validStatuses.length);
