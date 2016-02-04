@@ -5,7 +5,10 @@ WORKDIR /app
 COPY package.json ./
 RUN npm install
 
-COPY public src views index.js ./
+COPY public public
+COPY src src
+COPY views views
+COPY index.js ./
 
 ENV database=localhost
 
