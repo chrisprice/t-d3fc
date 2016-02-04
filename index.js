@@ -5,7 +5,7 @@ const express = require('express');
 const cors = require('cors');
 const ms = require('ms');
 
-const cache = require('./src/cache');
+const db = require('./src/db');
 const cacheControl = require('./src/cacheControl');
 const fetch = require('./src/fetch');
 
@@ -34,32 +34,30 @@ app.use(
 );
 
 app.get('/', (req, res) => {
-  const statuses = cache.statuses();
-  if (statuses == null) {
-    winston.warn('Results cache miss');
-    return res.status(503).render('error');
-  }
-  cacheControl(res, { maxAge: '1m' });
-  res.render('index', {
-    route: '/',
-    statuses: statuses.slice()
-      .sort((a, b) =>
-        (b.favorite_count + b.retweet_count) - (a.favorite_count + a.retweet_count)
-      )
+  db.favorites((error, statuses) => {
+    if (error) {
+      winston.warn('Results cache miss');
+      return res.status(500).render('error');
+    }
+    cacheControl(res, { maxAge: '1m' });
+    res.render('index', {
+      route: '/',
+      statuses: statuses
+    });
   });
 });
 
 app.get('/new', (req, res) => {
-  const statuses = cache.statuses();
-  if (statuses == null) {
-    winston.warn('Results cache miss');
-    return res.status(503).render('error');
-  }
-  cacheControl(res, { maxAge: '1m' });
-  res.render('new', {
-    route: '/new',
-    statuses: statuses.slice()
-      .sort((a, b) => b.id_str.localeCompare(a.id_str))
+  db.latest((error, statuses) => {
+    if (error) {
+      winston.warn('Results cache miss');
+      return res.status(500).render('error');
+    }
+    cacheControl(res, { maxAge: '1m' });
+    res.render('new', {
+      route: '/new',
+      statuses: statuses
+    });
   });
 });
 
@@ -74,13 +72,14 @@ app.get('/loading', (req, res) => {
 });
 
 app.get('/item/:id_str', (req, res) => {
-  const status = cache.status(req.params.id_str);
-  if (status == null) {
-    winston.warn('Item cache miss');
-    return res.status(404).render('error');
-  }
-  cacheControl(res, cacheControlSettings);
-  res.render('item', status);
+  db.status(String(req.params.id_str), (error, status) => {
+    if (error) {
+      winston.warn('Item cache miss');
+      return res.status(404).render('error');
+    }
+    cacheControl(res, cacheControlSettings);
+    res.render('item', status);
+  });
 });
 
 fetch();

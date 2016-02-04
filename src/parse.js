@@ -4,7 +4,6 @@ const winston = require('winston');
 const babel = require('babel-core');
 const AllHtmlEntities = require('html-entities').AllHtmlEntities;
 const htmlEntities = new AllHtmlEntities();
-const cache = require('./cache');
 
 const babelOptions = { presets: ['es2015', 'stage-2'] };
 
@@ -31,23 +30,11 @@ const transpile = (es6, id_str) => {
 };
 
 const parse = (status) => {
-  const cached = cache.status(status.id_str);
-  let processed = null;
-  if (cached != null) {
-    // Overwrite everything but the es5/6 values
-    processed = Object.assign({}, status, {
-      es5: cached.es5,
-      es6: cached.es6
-    });
-  } else {
-    const es6 = htmlEntities.decode(stripTwitterEntities(status));
-    processed = Object.assign({}, status, {
-      es5: transpile(es6, status.id_str),
-      es6
-    });
-  }
-  cache.status(status.id_str, processed);
-  return processed;
+  const es6 = htmlEntities.decode(stripTwitterEntities(status));
+  return Object.assign(status, {
+    es5: transpile(es6, status.id_str),
+    es6
+  });
 };
 
 module.exports = parse;

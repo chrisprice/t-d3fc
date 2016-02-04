@@ -3,7 +3,8 @@
     "arrowFunctions": true,
     "blockBindings": true,
     "objectLiteralShorthandMethods": true,
-    "objectLiteralShorthandProperties": true
+    "objectLiteralShorthandProperties": true,
+    "templateStrings": true
   },
   "env": {
     "node": true

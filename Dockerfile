@@ -1,10 +1,14 @@
 FROM node:slim
+
 WORKDIR /app
-COPY package.json package.json
+
+COPY package.json ./
 RUN npm install
-COPY public public
-COPY src src
-COPY views views
-COPY index.js index.js
+
+COPY public src views index.js ./
+
+ENV database=postgres
+
 EXPOSE 3000
+
 ENTRYPOINT node index.js
