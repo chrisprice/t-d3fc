@@ -60,10 +60,9 @@ module.exports = () => {
       // ignore errors, we'll recover next time round
       return winston.warn('Failed to get maxId for update', error);
     }
-    const sinceId = statuses[0].id_str, maxId = undefined;
     fetch(
-      sinceId,
-      maxId,
+      statuses.length > 0 ? statuses[0].id_str : undefined,
+      undefined,
       (error, statuses) => {
         if (error) {
           // ignore errors, we'll recover next time round
