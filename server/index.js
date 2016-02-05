@@ -8,6 +8,7 @@ const ms = require('ms');
 const db = require('./src/db');
 const cacheControl = require('./src/cacheControl');
 const fetch = require('./src/fetch');
+const update = require('./src/update');
 
 const app = express();
 
@@ -84,5 +85,6 @@ app.get('/item/:id_str', (req, res) => {
 
 fetch();
 setInterval(fetch, ms('30s'));
+setInterval(update, ms('10s'));
 
 app.listen(3000);

@@ -1,7 +1,7 @@
 'use strict';
 
 const winston = require('winston');
-const Twitter = require('twitter');
+const twitter = require('./twitter');
 const db = require('./db');
 const parse = require('./parse');
 const querystring = require('querystring');
@@ -16,13 +16,6 @@ const bannedUserIds = [
 const bannedStatusIdStrs = [
   '695016836237172737'
 ];
-
-const twitter = new Twitter({
-  consumer_key: process.env.consumer_key,
-  consumer_secret: process.env.consumer_secret,
-  access_token_key: process.env.access_token_key,
-  access_token_secret: process.env.access_token_secret
-});
 
 const fetch = (sinceId, maxId, cb) => {
   winston.info('fetch', sinceId, maxId);
