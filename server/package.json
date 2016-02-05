@@ -7,6 +7,7 @@
     "babel-standalone": "^6.4.4",
     "bootstrap": "^3.3.6",
     "cors": "^2.7.1",
+    "d3": "^3.5.14",
     "express": "^4.13.4",
     "html-entities": "^1.2.0",
     "jade": "^1.11.0",
@@ -19,7 +20,7 @@
   "scripts": {
     "js:clean": "rm -f ./public/dist/*.js",
     "js:build:bundle": "browserify ./public/src/index.js -t brfs -o ./public/dist/index.js",
-    "js:build:copy": "cp ./public/src/base.js ./public/src/playground.js ./public/dist/",
+    "js:build:copy": "cp ./public/src/base.js ./public/dist/",
     "js:build": "npm run js:build:copy && npm run js:build:bundle",
     "js:dev": "watchify ./public/src/index.js -t brfs -o ./public/dist/index.js",
     "js:lint": "eslint ./index.js ./public/src/*.js ./src/*.js ./spec/*.js",

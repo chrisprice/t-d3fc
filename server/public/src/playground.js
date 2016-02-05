@@ -1,4 +1,8 @@
-'use strict';
+var baseCss = require('fs').readFileSync(__dirname + '/base.css', 'utf8');
+var d3Js = require('fs').readFileSync(__dirname + '/../../node_modules/d3/d3.min.js', 'utf8');
+var baseJs = require('fs').readFileSync(__dirname + '/base.js', 'utf8');
+
+var defaultJs = "T().a({transform:d=>sc(4+s(d/1e3)),x:d=>mo[0]*10,y:d=>mo[1]*10}).t('Hello World')";
 
 var textarea = document.getElementById('code');
 var button = document.getElementById('run-code');
@@ -24,7 +28,11 @@ function updateStatus() {
 
 function render() {
   var code = textarea.value;
-  var doc = iframe.contentWindow.document;
+  if (code === '' || code === defaultJs) {
+    delete localStorage['playground'];
+  } else {
+    localStorage['playground'] = code;
+  }
   try {
     var es5 = compile(code);
   } catch(e) {
@@ -32,20 +40,22 @@ function render() {
     return;
   }
   hideError();
-  doc.open();
-  doc.write(
-    '<html lang="en"><head><link rel="stylesheet" href="base.css"></head><body>' +
-    '<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.13/d3.js"></script>' +
-    '<script type="text/javascript" src="base.js"></script>' +
+  iframe.srcdoc =
+    '<html lang="en"><head>' +
+    '<style>' + baseCss + '</style>' +
+    '</head><body>' +
+    '<script>' + d3Js + '</script>' +
+    '<script>' + baseJs + '</script>' +
     '<script>function tweet(t) {\n  ' + es5 + '\n}</script>' +
-    '</body></html>');
-  doc.close();
+    '</body></html>';
 }
 
 function compile(code) {
   // Compile es6 -> es5
   return Babel.transform(code, { presets: ['es2015', 'stage-2'] }).code;
 }
+
+textarea.value = localStorage['playground'] || defaultJs;
 
 textarea.addEventListener('input', updateStatus);
 button.addEventListener('click',  render);
