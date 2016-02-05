@@ -18,13 +18,13 @@
     "winston": "^2.1.1"
   },
   "scripts": {
-    "js:clean": "rm -f server/public/*.js",
-    "js:build": "cp public/*.js server/public/",
-    "js:lint": "eslint server/index.js server/src/*.js server/spec/*.js",
-    "js:test": "jasmine-node server/spec/parseSpec.js",
+    "js:clean": "rm -f ./public/dist/*.js",
+    "js:build": "cp ./public/src/*.js ./public/dist/",
+    "js:lint": "eslint ./index.js ./public/src/*.js ./src/*.js ./spec/*.js",
+    "js:test": "jasmine-node ./spec/parseSpec.js",
     "js": "npm run js:clean && npm run js:lint && npm run js:test && npm run js:build",
-    "css:clean": "rm -f server/public/*.css",
-    "css:build": "cp public/*.css server/public/",
+    "css:clean": "rm -f ./public/dist/*.css",
+    "css:build": "cp public/src/*.css ./public/dist/",
     "css": "npm run css:clean && npm run css:build",
     "build": "npm run css && npm run js"
   },

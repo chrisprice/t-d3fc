@@ -19,7 +19,7 @@ app.use((req, res, next) => {
   winston.info(req.method, req.url, req.ip);
   next();
 });
-app.use(express.static('public', cacheControlSettings));
+app.use(express.static('public/dist', cacheControlSettings));
 app.use(
   '/lazyload',
   express.static('node_modules/lazyloadjs/build', cacheControlSettings)
