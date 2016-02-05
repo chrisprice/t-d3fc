@@ -11,5 +11,8 @@
   },
   "rules": {
     "no-undef": 2
+  },
+  "globals": {
+    "shortenObject": true
   }
 }
