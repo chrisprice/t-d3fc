@@ -5,13 +5,13 @@ WORKDIR /app
 COPY package.json ./
 RUN npm install
 
+COPY server server
 COPY public public
-COPY src src
-COPY views views
-COPY index.js ./
+
+RUN npm run build
 
 ENV database=localhost
 
 EXPOSE 3000
 
-ENTRYPOINT node index.js
+ENTRYPOINT node server/index.js
