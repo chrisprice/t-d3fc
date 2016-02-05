@@ -9,26 +9,18 @@ var x = {},
   $ = '',
   _ = null;
 
-var d = d3,
-  ln = d.svg.line,
-  rn = d.range,
-  c1 = d.scale.category10,
-  c2 = d.scale.category20;
+// abbreviate the D3 API via https://github.com/ColinEberhardt/d3-api-obfuscate
+var d = shortenObject(d3);
+shortenObject(d.selection.prototype);
+shortenObject(d.selection.enter.prototype);
+shortenObject(d.transition.prototype);
 
-d.selection.prototype.a = d.selection.prototype.attr;
-d.selection.prototype.A = d.selection.prototype.append;
-d.selection.prototype.s = d.selection.prototype.select;
-d.selection.prototype.S = d.selection.prototype.selectAll;
-d.selection.prototype.c = d.selection.prototype.call;
-d.selection.prototype.C = d.selection.prototype.classed;
-d.selection.prototype.e = d.selection.prototype.each;
-d.selection.prototype.D = d.selection.prototype.data;
-d.selection.prototype.d = d.selection.prototype.datum;
-d.selection.prototype.r = d.selection.prototype.remove;
-d.selection.prototype.h = d.selection.prototype.html;
-d.selection.prototype.t = d.selection.prototype.text;
-d.selection.prototype.o = d.selection.prototype.on;
-d.selection.prototype.y = d.selection.prototype.style;
+// Math functions are not enumerable, so we use a different mechanism for discovering them
+var M = shortenObject(Math, Object.getOwnPropertyNames);
+
+// further shorten the most popular maths functions
+var s = M.sin,
+  c = M.cos;
 
 // mouse/touch positions
 var mo = [0, 0], to = [];
@@ -41,7 +33,7 @@ var n = function(tuple) {
 }
 
 function mouse() {
-  mo = n(d.mouse(this));
+  mo = n(d3.mouse(this));
 }
 
 function touch() {
@@ -50,38 +42,18 @@ function touch() {
 }
 
 // create a canvas
-var g = d.select("body")
-  .A("svg")
-  .a("viewBox", '0 0 ' + w + ' ' + h)
-  .o("mouseenter", mouse)
-  .o("mousemove", mouse)
-  .o("mouseleave", function() { mo = [0, 0]; })
-  .o("touchstart", touch)
-  .o("touchmove", touch)
-  .o("touchend", touch)
-  .A("g")
-  .a("transform", "translate(" + [w / 2, h / 2] + ")");
+var g = d3.select("body")
+  .append("svg")
+  .attr("viewBox", '0 0 ' + w + ' ' + h)
+  .on("mouseenter", mouse)
+  .on("mousemove", mouse)
+  .on("mouseleave", function() { mo = [0, 0]; })
+  .on("touchstart", touch)
+  .on("touchmove", touch)
+  .on("touchend", touch)
+  .append("g")
+  .attr("transform", "translate(" + [w / 2, h / 2] + ")");
 
-// aliases
-var a = Math.abs,
-  ce = Math.ceil,
-  fl = Math.floor,
-  ro = Math.round,
-  sq = Math.sqrt,
-  lo = Math.log,
-  l2 = Math.log2,
-  l1 = Math.log10,
-  mi = Math.min,
-  ma = Math.max,
-  s = Math.sin,
-  c = Math.cos,
-  ta = Math.tan,
-  as = Math.asin,
-  ac = Math.acos,
-  at = Math.atan,
-  r = Math.random,
-  e = Math.E,
-  π = Math.PI;
 
 var tr = 'transform',
   ts = function(x, y) {
@@ -102,14 +74,13 @@ var tr = 'transform',
 function j(element) {
   return function(data) {
     var update = g.selectAll(element)
-        .data(data || g.datum());
-    update.e = update.enter()
+        .data(data || [g.datum()]);
+    update.enter = update.enter()
       .append(element);
-    update.x = update.exit();
+    update.exit = update.exit();
     return update;
   }
 }
-
 
 var C = j('circle'),
   E = j('ellipse'),
@@ -123,7 +94,7 @@ var C = j('circle'),
 
 // render loop
 d3.timer(function(t) {
-  g.d([t]);
+  g.data([t]);
   if (window.tweet) {
     tweet(t);
   }

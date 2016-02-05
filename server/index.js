@@ -29,6 +29,10 @@ app.use(
   express.static('node_modules/bootstrap/dist', cacheControlSettings)
 );
 app.use(
+  '/d3-api-obfuscate',
+  express.static('node_modules/d3-api-obfuscate', cacheControlSettings)
+);
+app.use(
   '/babel-standalone.min.js',
   express.static('node_modules/babel-standalone/babel.min.js', cacheControlSettings)
 );

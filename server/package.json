@@ -15,7 +15,8 @@
     "pg": "^4.4.4",
     "twitter": "^1.2.5",
     "uniq": "^1.0.1",
-    "winston": "^2.1.1"
+    "winston": "^2.1.1",
+    "d3-api-obfuscate": "ColinEberhardt/d3-api-obfuscate"
   },
   "scripts": {
     "js:clean": "rm -f ./public/dist/*.js",
