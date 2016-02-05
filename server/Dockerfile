@@ -11,4 +11,4 @@ RUN npm run build
 ENV database=localhost
 EXPOSE 3000
 
-ENTRYPOINT node /index.js
+ENTRYPOINT node index.js
