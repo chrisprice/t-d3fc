@@ -1,4 +1,6 @@
-extends ./_layouts/default.jade
+extends ./_layouts/base.jade
 
 block content
-  h1 loading
+  div.progress
+    div.progress-bar.progress-bar-striped.active(role='progressbar', style='width: 45%')
+      span.sr-only Loading

@@ -1,4 +1,3 @@
-script(type='text/javascript', src='lazyload/lazyload.min.js')
 each status in statuses
   div.row
     div.col-sm-12
@@ -7,7 +6,6 @@ each status in statuses
           iframe(
             src='loading',
             data-src='item/'+status.id_str,
-            onload='lzld(this)',
             sandbox='allow-scripts'
           )
         div.caption
