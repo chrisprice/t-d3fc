@@ -9,7 +9,8 @@ const querystring = require('querystring');
 const searchTerm = 't.d3fc.io';
 
 const bannedUserIds = [
-  'BackwardSpy'
+  'BackwardSpy',
+  'andygmb1'
 ];
 
 const bannedStatusIdStrs = [
