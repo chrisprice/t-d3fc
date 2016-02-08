@@ -73,6 +73,17 @@ app.get('/loading', (req, res) => {
   res.render('loading');
 });
 
+app.get('/playground/:id_str', (req, res) => {
+  db.status(String(req.params.id_str), (error, status) => {
+    if (error) {
+      winston.warn('Item cache miss');
+      return res.status(404).render('error');
+    }
+    cacheControl(res, cacheControlSettings);
+    res.render('playground', status);
+  });
+});
+
 app.get('/item/:id_str', (req, res) => {
   db.status(String(req.params.id_str), (error, status) => {
     if (error) {

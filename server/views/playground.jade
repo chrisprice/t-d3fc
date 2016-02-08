@@ -5,6 +5,7 @@ block content
     h1.text-center Playground
     div.content
       textarea#code(rows='3', placeholder='Type code here', spellcheck='false').form-control.input-lg
+        #[=es6 && es6.trim()]
       button#run-code.btn.btn-block.btn-lg.btn-success Run code
       pre#alert.alert.alert-danger(style='display:none')
       div.iframe-wrapper

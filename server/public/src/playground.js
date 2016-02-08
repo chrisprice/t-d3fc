@@ -2,14 +2,14 @@ var baseCss = require('fs').readFileSync(__dirname + '/base.css', 'utf8');
 var d3Js = require('fs').readFileSync(__dirname + '/../../node_modules/d3/d3.min.js', 'utf8');
 var baseJs = require('fs').readFileSync(__dirname + '/base.js', 'utf8');
 
-var defaultJs = "T().a({transform:d=>sc(4+s(d/1e3)),x:d=>mo[0]*10,y:d=>mo[1]*10}).t('Hello World')";
-
 var textarea = document.getElementById('code');
 var button = document.getElementById('run-code');
 var iframe = document.getElementById('iframe');
 var htmlTempl = document.getElementById('template');
 var alert = document.getElementById('alert');
 var limit = 116;
+
+var helloWorldJs = "T().a({transform:d=>sc(4+s(d/1e3)),x:d=>mo[0]*10,y:d=>mo[1]*10}).t('Hello World')";
 
 function hideError() {
   alert.style.display = 'none';
@@ -28,7 +28,7 @@ function updateStatus() {
 
 function render() {
   var code = textarea.value;
-  if (code === '' || code === defaultJs) {
+  if (code === '' || code === helloWorldJs) {
     delete localStorage['playground'];
   } else {
     localStorage['playground'] = code;
@@ -55,7 +55,8 @@ function compile(code) {
   return Babel.transform(code, { presets: ['es2015', 'stage-2'] }).code;
 }
 
-textarea.value = localStorage['playground'] || defaultJs;
+// Default textarea to server specified value, falling back to local storage, then default
+textarea.value = textarea.value || localStorage['playground'] || helloWorldJs;
 
 textarea.addEventListener('input', updateStatus);
 button.addEventListener('click',  render);

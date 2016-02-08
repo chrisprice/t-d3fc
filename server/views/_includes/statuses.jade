@@ -24,3 +24,6 @@ each status in statuses
             a.btn.btn-primary(
               href='https://twitter.com/'+status.user.screen_name +'/status/'+status.id_str
             ) View Tweet
+            a.btn(
+              href='/playground/'+status.id_str
+            ) Fork in Playground
