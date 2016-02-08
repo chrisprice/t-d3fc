@@ -3,10 +3,11 @@ var d3Js = require('fs').readFileSync(__dirname + '/../../node_modules/d3/d3.min
 var baseJs = require('fs').readFileSync(__dirname + '/base.js', 'utf8');
 
 var textarea = document.getElementById('code');
-var button = document.getElementById('run-code');
+var runBtn = document.getElementById('run-code');
 var iframe = document.getElementById('iframe');
 var htmlTempl = document.getElementById('template');
 var alert = document.getElementById('alert');
+var tweetBtn = document.getElementById('tweet-code');
 var limit = 116;
 
 var helloWorldJs = "T().a({transform:d=>sc(4+s(d/1e3)),x:d=>mo[0]*10,y:d=>mo[1]*10}).t('Hello World')";
@@ -23,7 +24,7 @@ function showError(source, error) {
 function updateStatus() {
   var code = textarea.value;
   textarea.style.background = (code.length > limit) ? '#d9534f' : 'none';
-  button.innerText = 'Run code (' + (limit - code.length) + ')';
+  runBtn.innerText = 'Run code (' + (limit - code.length) + ')';
 }
 
 function render() {
@@ -48,6 +49,8 @@ function render() {
     '<script>' + baseJs + '</script>' +
     '<script>function tweet(t) {\n  ' + es5 + '\n}</script>' +
     '</body></html>';
+  tweetBtn.href = 'https://twitter.com/intent/tweet?text=' +
+    encodeURIComponent(code) + '&url=https://t.d3fc.io';
 }
 
 function compile(code) {
@@ -59,7 +62,7 @@ function compile(code) {
 textarea.value = textarea.value || localStorage['playground'] || helloWorldJs;
 
 textarea.addEventListener('input', updateStatus);
-button.addEventListener('click',  render);
+runBtn.addEventListener('click',  render);
 hideError();
 render();
 updateStatus();

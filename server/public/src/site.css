@@ -103,7 +103,7 @@ nav .nav > li{
 
 #playground .content {
   margin: 0 auto;
-  padding-bottom: 100px;
+  padding-bottom: 50px;
 }
 
 #playground h1 {
@@ -122,8 +122,11 @@ nav .nav > li{
 }
 
 #playground #run-code {
-  margin-bottom: 30px;
   margin-top: -1px;
+}
+
+#playground .btn {
+  margin-bottom: 30px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }

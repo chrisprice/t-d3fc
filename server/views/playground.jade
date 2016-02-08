@@ -6,7 +6,7 @@ block content
     div.content
       textarea#code(rows='3', placeholder='Type code here', spellcheck='false').form-control.input-lg
         #[=es6 && es6.trim()]
-      button#run-code.btn.btn-block.btn-lg.btn-success Run code
+      a#run-code.btn.btn-block.btn-lg.btn-success Run code
       pre#alert.alert.alert-danger(style='display:none')
       div.iframe-wrapper
         iframe(
@@ -14,5 +14,13 @@ block content
           sandbox='allow-scripts',
           src='/loading'
         )
+      a#tweet-code.btn.btn-block.btn-lg.btn-primary(
+        onclick='return !window.open(this.href, "", "width=550,height=520")',
+        target='_blank'
+      ) Tweet code*
+
+      div.alert.alert-info.
+        * #[b Play nice!] Variations on a theme are actively encouraged but please don't rip off
+        other people's work.
 
     script(type='text/javascript', src='/babel-standalone.min.js')
