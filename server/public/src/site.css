@@ -133,6 +133,7 @@ nav .nav > li{
 }
 
 .iframe-wrapper {
+  background: #d1d1d1;
   position: relative;
   height: 0;
   width: 100%;

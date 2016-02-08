@@ -3,12 +3,7 @@ extend ./_layouts/default.jade
 block content
   div.marketing
     div.thumbnail
-      div.iframe-wrapper
-        iframe(
-          src='loading',
-          data-src='/item/'+id_str,
-          sandbox='allow-scripts'
-        )
+      include ./_includes/iframe.jade
       div.caption
         div#embed
         p

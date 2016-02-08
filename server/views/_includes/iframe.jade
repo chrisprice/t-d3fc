@@ -1,0 +1,6 @@
+div.iframe-wrapper
+  iframe(
+    srcdoc='<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><style>body { margin: 0; background: #d1d1d1; }</style></head><body></body></html>',
+    data-src='/item/' + (status ? status.id_str : id_str),
+    sandbox='allow-scripts'
+  )
