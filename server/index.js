@@ -84,7 +84,10 @@ app.get('/item/:id_str', (req, res) => {
 });
 
 fetch();
-setInterval(fetch, ms('30s'));
-setInterval(update, ms('10s'));
+
+if (process.env.NODE_ENV === 'production') {
+  setInterval(fetch, ms('30s'));
+  setInterval(update, ms('10s'));
+}
 
 app.listen(3000);
