@@ -6,7 +6,6 @@
     "babel-preset-stage-2": "^6.3.13",
     "babel-standalone": "^6.4.4",
     "bootstrap": "^3.3.6",
-    "cors": "^2.7.1",
     "d3": "^3.5.14",
     "express": "^4.13.4",
     "html-entities": "^1.2.0",

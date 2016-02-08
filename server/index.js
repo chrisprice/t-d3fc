@@ -3,7 +3,6 @@
 const winston = require('winston');
 const express = require('express');
 const staticAsset = require('static-asset');
-const cors = require('cors');
 const ms = require('ms');
 
 const db = require('./src/db');
