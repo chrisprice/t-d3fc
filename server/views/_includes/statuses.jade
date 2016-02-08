@@ -18,7 +18,8 @@ each status in statuses
           p
             a.btn.btn-primary(
               href='/status/'+status.id_str
-            ) Details
-            a.btn(
+            ) View Details
+            &nbsp;
+            a.btn.btn-default(
               href='/playground/'+status.id_str
             ) Fork in Playground
