@@ -2,7 +2,7 @@ doctype html
 html(lang="en")
   head
     title t.d3fc.io
-    link(rel='stylesheet', href='/base.css')
+    link(rel='stylesheet', href=assetFingerprint('/base.css'))
     link(rel='icon', type='image/png' href='https://d3fc.io/images/favicon-16x16.png' sizes='16x16')
     link(rel='icon', type='image/png' href='https://d3fc.io/images/favicon-32x32.png' sizes='32x32')
     link(rel='icon', type='image/png' href='https://d3fc.io/images/favicon-96x96.png' sizes='96x96')
@@ -13,7 +13,7 @@ html(lang="en")
         location = '/';
       }
     script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.13/d3.js')
-    script(type='text/javascript', src='/base.js')
+    script(type='text/javascript', src=assetFingerprint('/base.js'))
     script(type='text/javascript').
       function tweet(t) {
         !{es5}

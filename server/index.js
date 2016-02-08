@@ -2,6 +2,7 @@
 
 const winston = require('winston');
 const express = require('express');
+const staticAsset = require('static-asset');
 const cors = require('cors');
 const ms = require('ms');
 
@@ -20,6 +21,7 @@ app.use((req, res, next) => {
   winston.info(req.method, req.url, req.ip);
   next();
 });
+app.use(staticAsset('public/dist'));
 app.use(express.static('public/dist', cacheControlSettings));
 app.use(
   '/lazyload',
