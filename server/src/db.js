@@ -8,14 +8,14 @@ const conString = `postgres://postgres@${process.env.database}/postgres`;
 const query = (sql, args, cb) => {
   pg.connect(conString, (error, client, done) => {
   if (error) {
-    winston.log('Failed to retrieve client from pool', error);
+    winston.warn('Failed to retrieve client from pool', error);
     return cb(error);
   }
   client.query(sql, args, (error, result) => {
     //call `done()` to release the client back to the pool
     done();
     if (error) {
-      winston.log('Failed to perform query', error);
+      winston.warn('Failed to perform query', error);
       return cb(error);
     }
     cb(null, result.rows.map((r) => r.status));
@@ -29,7 +29,7 @@ exports.latest = (cb) => {
     [],
     (error, statuses) => {
       if (error) {
-        winston.log('Failed to select latest', error);
+        winston.warn('Failed to select latest', error);
         return cb(error);
       }
       cb(null, statuses);
@@ -48,7 +48,7 @@ exports.favorites = (cb) => {
     [],
     (error, statuses) => {
       if (error) {
-        winston.log('Failed to select latest', error);
+        winston.warn('Failed to select latest', error);
         return cb(error);
       }
       cb(null, statuses);
@@ -62,7 +62,7 @@ const select = (id_str, cb) => {
     [{id_str: id_str}],
     (error, statuses) => {
       if (error) {
-        winston.log('Failed to select status', id_str, error);
+        winston.warn('Failed to select status', id_str, error);
         return cb(error);
       }
       cb(null, statuses[0]);
@@ -76,7 +76,7 @@ const insert = (status, cb) => {
     [status],
     (error) => {
       if (error) {
-        winston.log('Failed to insert status', status, error);
+        winston.warn('Failed to insert status', status, error);
         return cb(error);
       }
       cb();
@@ -92,7 +92,7 @@ const update = (status, cb) => {
     [status, status.id_str],
     (error) => {
       if (error) {
-        winston.log('Failed to insert status', status, error);
+        winston.warn('Failed to insert status', status, error);
         return cb(error);
       }
       cb();
@@ -105,7 +105,7 @@ exports.status = (id_str_or_status, cb) => {
   const id_str = status == null ? id_str_or_status : status.id_str;
   select(id_str, (error, existingStatus) => {
     if (error) {
-      winston.log('Failed to retrieve status', id_str, error);
+      winston.warn('Failed to retrieve status', id_str, error);
       return cb(error);
     }
     if (status == null) {
