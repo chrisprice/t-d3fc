@@ -1,0 +1,44 @@
+extend ./_layouts/default.jade
+
+block content
+  div.marketing
+    div.thumbnail
+      div.iframe-wrapper
+        iframe(
+          src='loading',
+          data-src='/item/'+id_str,
+          sandbox='allow-scripts'
+        )
+      div.caption
+        div#embed
+        p
+          a.btn.btn-primary(
+            href='/playground/'+id_str
+          ) Fork in Playground
+  script(type='text/javascript').
+    var twttr = (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+      if (d.getElementById(id)) return t;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js, fjs);
+
+      t._e = [];
+      t.ready = function(f) {
+        t._e.push(f);
+      };
+
+      return t;
+    }(document, "script", "twitter-wjs"));
+    twttr.ready(function() {
+      twttr.widgets.createTweet(
+        '#[=id_str]',
+        document.getElementById('embed'),
+        {
+          align: 'center',
+          cards: 'hidden'
+        }
+      );
+    });
