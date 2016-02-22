@@ -5,17 +5,9 @@ const twitter = require('./twitter');
 const db = require('./db');
 const parse = require('./parse');
 const querystring = require('querystring');
+const sinbin = require('./sinbin');
 
 const searchTerm = 't.d3fc.io';
-
-const bannedUserIds = [
-  'BackwardSpy',
-  'andygmb1'
-];
-
-const bannedStatusIdStrs = [
-  '695016836237172737'
-];
 
 const fetch = (sinceId, maxId, cb) => {
   winston.info('fetch', sinceId, maxId);
@@ -64,8 +56,7 @@ module.exports = () => {
         }
         winston.info('Search completed', statuses.length);
         const validStatuses = statuses.filter((status) => !status.retweeted_status)
-          .filter((status) => bannedStatusIdStrs.indexOf(status.id_str) === -1)
-          .filter((status) => bannedUserIds.indexOf(status.user.screen_name) === -1)
+          .filter(sinbin)
           .map(parse)
           .filter((status) => status.es6.trim())
           .filter((status) => status.es5);

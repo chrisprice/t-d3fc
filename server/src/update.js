@@ -4,18 +4,6 @@ const winston = require('winston');
 const twitter = require('./twitter');
 const db = require('./db');
 const parse = require('./parse');
-const querystring = require('querystring');
-
-const searchTerm = 't.d3fc.io';
-
-const bannedUserIds = [
-  'BackwardSpy',
-  'andygmb1'
-];
-
-const bannedStatusIdStrs = [
-  '695016836237172737'
-];
 
 module.exports = () => {
   winston.info('Updating random status');
