@@ -1,0 +1,9 @@
+extends ./_layouts/default.jade
+
+block content
+  div.row
+    each gif in gifs
+      div.col-sm-3
+        div.thumbnail
+          a(href='/status/'+gif.id)
+            img(src='gif/'+gif.file)

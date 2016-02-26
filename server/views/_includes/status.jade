@@ -1,0 +1,19 @@
+div.col-md-4.col-sm-12
+  div.thumbnail
+    a(href='/status/'+status.id_str)
+      if gifs[status.id_str]
+        img(src='gif/'+status.id_str+'.gif')
+      else
+        div(style='margin:70px 0') No preview available yet but click through to see the real deal
+    div.caption
+      h3
+        a(href='https://twitter.com/'+status.user.screen_name)
+          =status.user.name
+      pre=status.es6
+      p
+        span(class='glyphicon glyphicon-retweet', aria-hidden="true")
+        =' '+status.retweet_count
+        |&nbsp;
+        |&nbsp;
+        span(class='glyphicon glyphicon-heart', aria-hidden="true")
+        =' '+status.favorite_count

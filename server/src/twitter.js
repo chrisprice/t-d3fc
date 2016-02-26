@@ -1,4 +1,5 @@
 const Twitter = require('twitter');
+const winston = require('winston');
 
 const twitter = new Twitter({
   consumer_key: process.env.consumer_key,
@@ -7,4 +8,13 @@ const twitter = new Twitter({
   access_token_secret: process.env.access_token_secret
 });
 
-module.exports = twitter;
+exports.get = (action, params) =>
+  new Promise((resolve, reject) => {
+    twitter.get(action, params, (error, tweets, response) => {
+      if (error) {
+        winston.warn(error);
+        return reject(error);
+      }
+      resolve(tweets, response);
+    });
+  });

@@ -1,25 +1,10 @@
-each status in statuses
-  div.row
-    div.col-sm-12
-      div.thumbnail
-        include ./iframe.jade
-        div.caption
-          h3
-            a(href='https://twitter.com/'+status.user.screen_name)
-              =status.user.name
-          pre=status.es6
-          p
-            span(class='glyphicon glyphicon-retweet', aria-hidden="true")
-            =' '+status.retweet_count
-            |&nbsp;
-            |&nbsp;
-            span(class='glyphicon glyphicon-heart', aria-hidden="true")
-            =' '+status.favorite_count
-          p
-            a.btn.btn-primary(
-              href='/status/'+status.id_str
-            ) View Details
-            | &nbsp;
-            a.btn.btn-default(
-              href='/playground/'+status.id_str
-            ) Fork in Playground
+each status, index in statuses
+  if index % 3 == 0
+    div.row
+      include ./status.jade
+      -status = statuses[index+1]
+      if status
+        include ./status.jade
+      -status = statuses[index+2]
+      if status
+        include ./status.jade
