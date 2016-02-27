@@ -36,31 +36,33 @@ app.use(
 );
 
 app.get('/', (req, res) => {
-  db.favorites((error, statuses) => {
-    if (error) {
-      winston.warn('Results cache miss');
-      return res.status(500).render('error');
-    }
-    cacheControl(res, { maxAge: '1m' });
-    res.render('index', {
-      route: '/',
-      statuses: statuses
+  db.favorites()
+    .then((statuses) => {
+      cacheControl(res, { maxAge: '1m' });
+      res.render('index', {
+        route: '/',
+        statuses: statuses
+      });
+    })
+    .catch((e) => {
+      winston.warn('Results cache miss', e);
+      res.status(500).render('error');
     });
-  });
 });
 
 app.get('/new', (req, res) => {
-  db.latest((error, statuses) => {
-    if (error) {
-      winston.warn('Results cache miss');
-      return res.status(500).render('error');
-    }
-    cacheControl(res, { maxAge: '1m' });
-    res.render('new', {
-      route: '/new',
-      statuses: statuses
+  db.latest()
+    .then((statuses) => {
+      cacheControl(res, { maxAge: '1m' });
+      res.render('new', {
+        route: '/new',
+        statuses: statuses
+      });
+    })
+    .catch((e) => {
+      winston.warn('Results cache miss', e);
+      res.status(500).render('error');
     });
-  });
 });
 
 app.get('/playground', (req, res) => {
@@ -74,39 +76,40 @@ app.get('/loading', (req, res) => {
 });
 
 app.get('/playground/:id_str', (req, res) => {
-  db.status(String(req.params.id_str), (error, status) => {
-    if (error) {
+  db.status(String(req.params.id_str))
+    .then((status) => {
+      cacheControl(res, cacheControlSettings);
+      res.render('playground', status);
+    })
+    .catch((e) => {
       winston.warn('Item cache miss');
-      return res.status(404).render('error');
-    }
-    cacheControl(res, cacheControlSettings);
-    res.render('playground', status);
-  });
+      res.status(404).render('error');
+    });
 });
 
 app.get('/item/:id_str', (req, res) => {
-  db.status(String(req.params.id_str), (error, status) => {
-    if (error) {
-      winston.warn('Item cache miss');
-      return res.status(404).render('error');
-    }
-    cacheControl(res, cacheControlSettings);
-    res.render('item', status);
-  });
+  db.status(String(req.params.id_str))
+    .then((status) => {
+      cacheControl(res, cacheControlSettings);
+      res.render('item', status);
+    })
+    .catch((e) => {
+      winston.warn('Item cache miss', e);
+      res.status(404).render('error');
+    });
 });
 
 app.get('/status/:id_str', (req, res) => {
-  db.status(String(req.params.id_str), (error, status) => {
-    if (error) {
-      winston.warn('Item cache miss');
-      return res.status(404).render('error');
-    }
-    cacheControl(res, cacheControlSettings);
-    res.render('status', status);
-  });
+  db.status(String(req.params.id_str))
+    .then((status) => {
+      cacheControl(res, cacheControlSettings);
+      res.render('status', status);
+    })
+    .catch((e) => {
+      winston.warn('Item cache miss', e);
+      res.status(404).render('error');
+    });
 });
-
-fetch();
 
 if (process.env.NODE_ENV === 'production') {
   setInterval(fetch, ms('30s'));

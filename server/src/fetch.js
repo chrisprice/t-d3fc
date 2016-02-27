@@ -5,78 +5,49 @@ const twitter = require('./twitter');
 const db = require('./db');
 const parse = require('./parse');
 const querystring = require('querystring');
+const sinbin = require('./sinbin');
 
 const searchTerm = 't.d3fc.io';
 
-const bannedUserIds = [
-  'BackwardSpy',
-  'andygmb1'
-];
-
-const bannedStatusIdStrs = [
-  '695016836237172737'
-];
-
-const fetch = (sinceId, maxId, cb) => {
+const fetch = (sinceId, maxId) => {
   winston.info('fetch', sinceId, maxId);
-  twitter.get(
-    'search/tweets',
-    {
+  return twitter.get('search/tweets', {
       q: searchTerm,
       count: 100,
       since_id: sinceId,
       max_id: maxId
-    },
-    (error, tweets, response) => {
-      if (error) {
-        winston.warn(error);
-        return cb(error, []);
-      }
+    })
+    .then((tweets, response) => {
       winston.info('fetch response', tweets.statuses.length);
       const statuses = tweets.statuses;
       const nextResults = tweets.search_metadata.next_results;
       if (nextResults == null) {
-        return cb(null, statuses);
+        return statuses;
       }
       const params = querystring.parse(nextResults.substr(1));
-      fetch(sinceId, params.max_id, (error, olderStatuses) => {
-        cb(error, statuses.concat(olderStatuses));
-      });
-    }
-  );
+      return fetch(sinceId, params.max_id)
+        .then((olderStatuses) => statuses.concat(olderStatuses));
+    });
 };
 
 
 module.exports = () => {
   winston.info('Updating search results');
-  db.latest((error, statuses) => {
-    if (error) {
-      // ignore errors, we'll recover next time round
-      return winston.warn('Failed to get maxId for update', error);
-    }
-    fetch(
-      statuses.length > 0 ? statuses[0].id_str : undefined,
-      undefined,
-      (error, statuses) => {
-        if (error) {
-          // ignore errors, we'll recover next time round
-          return winston.warn('Failed fetch all statuses', error);
-        }
-        winston.info('Search completed', statuses.length);
-        const validStatuses = statuses.filter((status) => !status.retweeted_status)
-          .filter((status) => bannedStatusIdStrs.indexOf(status.id_str) === -1)
-          .filter((status) => bannedUserIds.indexOf(status.user.screen_name) === -1)
-          .map(parse)
-          .filter((status) => status.es6.trim())
-          .filter((status) => status.es5);
-        validStatuses.forEach((status) => db.status(status, (error) => {
-          if (error) {
-            // ignore errors, we'll recover next time round
-            return winston.warn('Failed to update status', status.id_str, error);
-          }
-        }));
-        winston.info('Valid statuses', validStatuses.length);
-      }
-    );
-  });
+  return db.latest()
+    .then((statuses) => {
+      const latestId = statuses.length > 0 ? statuses[0].id_str : undefined;
+      return fetch(latestId);
+    })
+    .then((statuses) => {
+      winston.info('Search completed', statuses.length);
+      const promises = statuses.filter((status) => !status.retweeted_status)
+        .filter(sinbin)
+        .map(parse)
+        .filter((status) => status.es6.trim())
+        .filter((status) => status.es5)
+        .map((status) => db.status(status));
+      winston.info('Valid statuses', promises.length);
+      return Promise.all(promises);
+    })
+    .catch((e) => winston.warn('Failed to fetch', e));;
 };
