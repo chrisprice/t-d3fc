@@ -9,6 +9,8 @@ const db = require('./src/db');
 const cacheControl = require('./src/cacheControl');
 const fetch = require('./src/fetch');
 const update = require('./src/update');
+const gifs = require('./src/gifs');
+const pick = require('./src/pick');
 
 const app = express();
 
@@ -34,14 +36,19 @@ app.use(
   '/babel-standalone.min.js',
   express.static('node_modules/babel-standalone/babel.min.js', cacheControlSettings)
 );
+app.use(
+  '/gif',
+  express.static(gifs.directory, cacheControlSettings)
+);
 
 app.get('/', (req, res) => {
-  db.favorites()
-    .then((statuses) => {
+  Promise.all([db.favorites(), gifs.all()])
+    .then((results) => {
       cacheControl(res, { maxAge: '1m' });
       res.render('index', {
         route: '/',
-        statuses: statuses
+        statuses: results[0],
+        gifs: results[1]
       });
     })
     .catch((e) => {
@@ -51,12 +58,13 @@ app.get('/', (req, res) => {
 });
 
 app.get('/new', (req, res) => {
-  db.latest()
-    .then((statuses) => {
+  Promise.all([db.latest(), gifs.all()])
+    .then((results) => {
       cacheControl(res, { maxAge: '1m' });
       res.render('new', {
         route: '/new',
-        statuses: statuses
+        statuses: results[0],
+        gifs: results[1]
       });
     })
     .catch((e) => {
@@ -114,6 +122,7 @@ app.get('/status/:id_str', (req, res) => {
 if (process.env.NODE_ENV === 'production') {
   setInterval(fetch, ms('30s'));
   setInterval(update, ms('10s'));
+  setInterval(gifs.generate, ms('30s'));
 }
 
 app.listen(3000);

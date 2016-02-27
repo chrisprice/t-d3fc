@@ -29,6 +29,19 @@ body {
   text-align: center;
 }
 
+a.intent {
+  color: #697882;
+}
+a.intent:hover {
+  text-decoration: none;
+}
+a.like:hover {
+  color: #E81C4F;
+}
+a.retweet:hover {
+  color: #19CF86;
+}
+
 nav .nav > li > a {
   font-size: 16px;
   padding-left: 5px;
