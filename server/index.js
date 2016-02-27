@@ -119,6 +119,25 @@ app.get('/status/:id_str', (req, res) => {
     });
 });
 
+app.get('/lookup/:code', (req, res) => {
+  db.latest()
+    .then((statuses) => {
+      const code = new Buffer(req.params.code, 'base64').toString('utf8').trim();
+      const matching = statuses.filter((status) => status.es6.trim() === code);
+      if (!matching.length) {
+        throw 'No matching';
+      }
+      // oldest id should be given precedence
+      const id = pick.last(matching).id_str;
+      res.redirect(301, `/status/${id}`);
+    })
+    .catch((e) => {
+      winston.warn('unpublished miss', e);
+      // not found, assume not picked up yet, send them to latest
+      return res.redirect(302, `/new`);
+    });
+});
+
 if (process.env.NODE_ENV === 'production') {
   setInterval(fetch, ms('30s'));
   setInterval(update, ms('10s'));

@@ -49,8 +49,12 @@ function render() {
     '<script>' + baseJs + '</script>' +
     '<script>function tweet(t) {\n  ' + es5 + '\n}</script>' +
     '</body></html>';
-  tweetBtn.href = 'https://twitter.com/intent/tweet?text=' +
-    encodeURIComponent(code) + '&url=https://t.d3fc.io';
+  var encoded = encodeURIComponent(code);
+  tweetBtn.href =
+    'https://twitter.com/intent/tweet?text=' +
+    encoded +
+    '&url=' +
+    encodeURIComponent('https://t.d3fc.io/lookup/' + btoa(code));
 }
 
 function compile(code) {
