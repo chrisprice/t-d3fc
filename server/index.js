@@ -141,7 +141,7 @@ app.get('/lookup/:code', (req, res) => {
 if (process.env.NODE_ENV === 'production') {
   setInterval(fetch, ms('30s'));
   setInterval(update, ms('10s'));
-  setInterval(gifs.generate, ms('30s'));
+  setInterval(gifs.generate, ms('1m'));
 }
 
 app.listen(3000);

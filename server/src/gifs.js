@@ -53,13 +53,15 @@ const generate = (id) => {
   });
   return fetch(`${service}?${query}`, { timeout: ms('30s') })
     .then((response) => {
-      if (!response.ok) {
+      if (!response.ok && response.status !== 504) {
         return response.text()
           .then((text) => {
             throw `Invalid response ${response.status}: ${text}`
           });
       }
-      return writeToFile(response.body, path.join(directory, `${id}.gif`))
+      const stream = response.status !== 504 ? response.body :
+        fs.createReadStream('./public/dist/preview-unavailable.gif');
+      return writeToFile(stream, path.join(directory, `${id}.gif`))
     });
 };
 

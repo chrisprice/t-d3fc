@@ -30,8 +30,8 @@
     "css:clean": "rm -f ./public/dist/*.css",
     "css:build": "cp public/src/*.css ./public/dist/",
     "css": "npm run css:clean && npm run css:build",
-    "png": "cp public/src/*.png ./public/dist/",
-    "build": "npm run css && npm run js && npm run png"
+    "gif": "cp public/src/*.gif ./public/dist/",
+    "build": "npm run css && npm run js && npm run gif"
   },
   "devDependencies": {
     "brfs": "^1.4.3",
