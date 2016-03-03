@@ -119,7 +119,7 @@ app.get('/status/:id_str', (req, res) => {
     });
 });
 
-app.get('/lookup/:code', (req, res) => {
+app.get('/lookup/:code*', (req, res) => {
   db.latest()
     .then((statuses) => {
       const code = new Buffer(req.params.code, 'base64').toString('utf8').trim();
