@@ -24,22 +24,29 @@ const query = (sql, args) =>
     });
   });
 
-exports.latest = () =>
+exports.unique = () =>
   query(
-    `SELECT status FROM statuses ORDER BY (status ->> 'id_str') DESC`,
+    `SELECT DISTINCT ON (status ->> 'es6') status
+      FROM statuses
+      ORDER BY status ->> 'es6', (status ->> 'id_str')`,
     []
   );
 
+exports.latest = () =>
+  exports.unique()
+    .then((statuses) =>
+      statuses.sort((a, b) =>
+        b.id_str.localeCompare(a.id_str)
+      )
+    );
+
 exports.favorites = () =>
-  query(
-    `SELECT status
-      FROM statuses
-      ORDER BY (
-        (status ->> 'favorite_count')::numeric +
-        (status ->> 'retweet_count')::numeric
-      ) DESC`,
-    []
-  );
+  exports.unique()
+    .then((statuses) =>
+      statuses.sort((a, b) =>
+        (b.favorite_count + b.retweet_count) - (a.favorite_count + a.retweet_count)
+      )
+    );
 
 const select = (id_str) =>
   query(
