@@ -79,6 +79,7 @@ var a = Math.abs,
   as = Math.asin,
   ac = Math.acos,
   at = Math.atan,
+  a2 = Math.atan2,
   r = Math.random,
   e = Math.E,
   π = Math.PI;
