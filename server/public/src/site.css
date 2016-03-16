@@ -126,7 +126,7 @@ nav .nav > li{
 }
 
 #playground textarea {
-  white-space: pre;
+  white-space: normal;
   margin-top: 50px;
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -168,4 +168,8 @@ nav .nav > li{
 
 .iframe-wrapper>iframe svg {
   width: 100%;
+}
+
+pre {
+  white-space: normal;
 }
