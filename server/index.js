@@ -46,7 +46,6 @@ app.get('/', (req, res) => {
     .then((results) => {
       cacheControl(res, { maxAge: '1m' });
       res.render('index', {
-        route: '/',
         statuses: results[0],
         gifs: results[1]
       });
@@ -62,7 +61,6 @@ app.get('/new', (req, res) => {
     .then((results) => {
       cacheControl(res, { maxAge: '1m' });
       res.render('new', {
-        route: '/new',
         statuses: results[0],
         gifs: results[1]
       });
