@@ -1,0 +1,25 @@
+version: '2'
+services:
+  server:
+    build: ./server
+    ports:
+      - '80:3000'
+    volumes:
+      - ./volumes/gifs:/app/gifs
+    environment:
+      database: db
+      gif_target: http://localhost
+      gif_service: http://selector-to-gif:3000/
+      gif_dir: /apps/gifs
+    env_file: .env
+    depends_on:
+      - db
+      - selector-to-gif
+  db:
+    build: ./db
+    volumes:
+      - ./volumes/postgresql:/var/lib/postgresql/data
+  selector-to-gif:
+    image: chrisprice/selector-to-gif
+    environment:
+      TIMEOUT: 15000
