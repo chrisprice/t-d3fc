@@ -81,6 +81,26 @@ app.get('/loading', (req, res) => {
   res.render('loading');
 });
 
+app.get('/user/:screen_name', (req, res) => {
+  Promise.all([db.user(String(req.params.screen_name)), gifs.all()])
+    .then((results) => {
+      var statuses = results[0];
+      if (statuses.length === 0) {
+        return res.status(404).render('error');
+      }
+      cacheControl(res, { maxAge: '1m' });
+      res.render('user', {
+        user: statuses[0].user,
+        statuses: statuses,
+        gifs: results[1]
+      });
+    })
+    .catch((e) => {
+      winston.warn('Results cache miss', e);
+      res.status(500).render('error');
+    });
+});
+
 app.get('/playground/:id_str', (req, res) => {
   db.status(String(req.params.id_str))
     .then((status) => {

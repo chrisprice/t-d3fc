@@ -8,9 +8,9 @@ services:
       - ./volumes/gifs:/app/gifs
     environment:
       database: db
-      gif_target: http://localhost
+      gif_target: https://t.d3fc.io
       gif_service: http://selector-to-gif:3000/
-      gif_dir: /apps/gifs
+      gif_dir: /app/gifs
     env_file: .env
     depends_on:
       - db

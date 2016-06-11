@@ -48,6 +48,13 @@ exports.favorites = () =>
       )
     );
 
+exports.user = (screen_name) =>
+  query(
+    `SELECT status FROM statuses WHERE ((status @> $1::jsonb))
+      ORDER BY status ->> 'id_str'`,
+    [{user: {screen_name: screen_name}}]
+  );
+
 const select = (id_str) =>
   query(
       `SELECT status FROM statuses WHERE ((status @> $1::jsonb))`,

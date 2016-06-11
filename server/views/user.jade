@@ -1,0 +1,10 @@
+extends ./_layouts/default.jade
+
+block content
+  div.row
+    div.col-sm-12
+      h1.page-header
+        a(href='https://twitter.com/'+user.screen_name)
+          =user.name
+  div.marketing
+    include ./_includes/statuses.jade
