@@ -1,0 +1,22 @@
+body {
+  margin: 0;
+  background: #d1d1d1;
+}
+svg {
+  display: block;
+}
+
+circle, ellipse, line, path, polygon, polyline, rect {
+  fill:none;
+  stroke: #222;
+}
+
+text {
+  text-anchor: middle;
+  dominant-baseline: middle;
+  fill: #222;
+}
+
+.f {
+  fill: #222;
+}
